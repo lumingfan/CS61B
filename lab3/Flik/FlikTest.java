@@ -1,14 +1,11 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class FilkTest {
+public class FlikTest {
     @Test
     public void sameTest() {
-        int testTimes = 100;
-        for (int i = 0; i < testTimes; ++i) {
-            int randomInt = (int)(Math.random() * 10);
-            int otherInt = (int)(Math.random() * 10);
-            assertEquals(randomInt == otherInt, Flik.isSameNumber(randomInt, otherInt));
-        }
+        assertTrue(Flik.isSameNumber(127, 127));
+        assertTrue(Flik.isSameNumber(129, 129));
+        assertTrue(Flik.isSameNumber(128, 128));
     }
 }
