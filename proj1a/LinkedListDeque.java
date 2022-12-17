@@ -95,8 +95,7 @@ public class LinkedListDeque<T> {
         }
         return ptr.item;
     }
-
-   private T getRecursive(int index, ItemNode ptr) {
+    private T getRecursive(int index, ItemNode ptr) {
         if (ptr == sentinel) {
             return null;
         }
@@ -106,7 +105,7 @@ public class LinkedListDeque<T> {
         }
 
         return getRecursive(index - 1, ptr.next);
-   }
+    }
     public T getRecursive(int index) {
         return getRecursive(index, sentinel.next);
     }
