@@ -1,4 +1,4 @@
-public class ArrayDeque<T>{
+public class ArrayDeque<T> {
     // the front of deque
     private int lo;
     // the end of deque
@@ -50,7 +50,7 @@ public class ArrayDeque<T>{
         if (isEmpty()) {
             items[hi] = item;
             ++size;
-            return ;
+            return;
         }
         if (size == items.length) {
             resize(size << 1);
@@ -64,7 +64,7 @@ public class ArrayDeque<T>{
         if (isEmpty()) {
             items[lo] = item;
             ++size;
-            return ;
+            return;
         }
         if (size == items.length) {
             resize(size << 1);
