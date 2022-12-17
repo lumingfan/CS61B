@@ -1,22 +1,4 @@
-/** the implements of deque
- *  using circular array topology
- *  accept any generic type
- *
- *  API:
- *      public void addFirst(T item)    :   Adds an item of type T to the front of the deque
- *      public void addLast(T item)     :   Adds an item of type T to the back of the deque
- *      public boolean isEmpty()        :   Returns true if deque is empty, false otherwise
- *      public int size()               :   Returns the number of items in the deque
- *      public void printDeque()        :   Prints the items in the deque from first to last, separated by a space
- *      public T removeFirst()          :   Removes and returns the item at the front of the deque, If no sush item exists, return null
- *      public T removeLast()           :   Removes and returns the item at the back of the deque, if no such item exists, returns nulla
- *      public T get(int index)         :   get the item at the given index, where 0 is the front, 1 is the next item, and so forth, if no such item exists, returns null
- *      public ArrayDeque()             :   Creates an empty deque
- *
- */
-
-
-public class ArrayDeque<Item>{
+public class ArrayDeque<T>{
     // the front of deque
     private int lo;
     // the end of deque
@@ -24,23 +6,23 @@ public class ArrayDeque<Item>{
     // the size of deque
     private int size;
     // the real arr of deque
-    private Item[] items;
+    private T[] items;
 
     public ArrayDeque() {
-        items = (Item[]) new Object[8];
+        items = (T[]) new Object[8];
         lo = 0;
         hi = 0;
         size = 0;
     }
 
     private void resize(int capacity) {
-        Item[] newItems = (Item[]) new Object[capacity];
+        T[] newTs = (T[]) new Object[capacity];
         for (int i = 0; i < size; ++i) {
-            newItems[i] = get(i);
+            newTs[i] = get(i);
         }
         lo = 0;
         hi = size - 1;
-        items = newItems;
+        items = newTs;
     }
 
     private int next(int i) {
@@ -64,7 +46,7 @@ public class ArrayDeque<Item>{
         return empty;
     }
 
-    public void addLast(Item item) {
+    public void addLast(T item) {
         if (isEmpty()) {
             items[hi] = item;
             ++size;
@@ -78,7 +60,7 @@ public class ArrayDeque<Item>{
         ++size;
     }
 
-    public void addFirst(Item item) {
+    public void addFirst(T item) {
         if (isEmpty()) {
             items[lo] = item;
             ++size;
@@ -91,11 +73,11 @@ public class ArrayDeque<Item>{
         items[lo] = item;
         ++size;
     }
-    public Item removeFirst() {
+    public T removeFirst() {
         if (isEmpty()) {
             return null;
         }
-        Item res = items[lo];
+        T res = items[lo];
         items[lo] = null;
         lo = next(lo);
         --size;
@@ -105,11 +87,11 @@ public class ArrayDeque<Item>{
         return res;
     }
 
-    public Item removeLast() {
+    public T removeLast() {
         if (isEmpty()) {
             return null;
         }
-        Item res = items[hi];
+        T res = items[hi];
         items[hi] = null;
         hi = last(hi);
         --size;
@@ -119,7 +101,7 @@ public class ArrayDeque<Item>{
         return res;
     }
 
-    public Item get(int index) {
+    public T get(int index) {
         if (index < 0 || index >= size) {
             return null;
         }

@@ -1,30 +1,3 @@
-/** the implements of deque
- *  using circular sentinel topology
- *  accept any generic type
- *
- *  API:
- *      public void addFirst(T item)    :   Adds an item of type T to the front of the deque 
- *      public void addLast(T item)     :   Adds an item of type T to the back of the deque
- *      public boolean isEmpty()        :   Returns true if deque is empty, false otherwise
- *      public int size()               :   Returns the number of items in the deque
- *      public void printDeque()        :   Prints the items in the deque from first to last, separated by a space 
- *      public T removeFirst()          :   Removes and returns the item at the front of the deque, If no sush item exists, return null
- *      public T removeLast()           :   Removes and returns the item at the back of the deque, if no such item exists, returns nulla
- *      public T get(int index)         :   Using iteration to get the item at the given index, where 0 is the front, 1 is the next item, and so forth, if no such item exists, returns null
-*       public LinkedListDeque()        :   Creates an empty linked list deque
-*       public T getRecursive(int index):   Same as get, but uses recursion
-*/
-
-/** invariant
- *  addFirst    :   add the item behind the sentinel
- *  addLast     :   add the item before the sentinel
- *  removeFirst :   remove the item behind the sentinel, unless the deque is empty
- *  removeLast  :   remove the item before the sentinel, unless the deque is empty
- *  size        :   the size of the deque
- *  isEmpty     :   size == 0;
-*/
-
-
 public class LinkedListDeque<T> {
     private class ItemNode {
         public T item;
