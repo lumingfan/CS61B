@@ -11,12 +11,12 @@ public class TestArrayDequeGold {
         // String ope = "\n";
         for (int i = 0; i < testTimes; ++i) {
             double choice = StdRandom.uniform();
-            if (choice < 0.2 && !stu.isEmpty() && !right.isEmpty()) {
+            if (choice < 0.2 &&!right.isEmpty()) {
                 // ope += "removeFirst(): " + stuRemoveFirst + "\n";
                 // String ope = "removeFirst(): " + stuRemoveFirst + "\n";
                 String ope = "removeFirst()\n";
                 assertEquals(ope, stu.removeFirst(), right.removeFirst());
-            } else if (choice < 0.4 && !stu.isEmpty() && !right.isEmpty()) {
+            } else if (choice < 0.4 && !right.isEmpty()) {
                 // ope += "removeLast(): " + stuRemoveLast + "\n";
                 // String ope = "removeLast(): " + stuRemoveLast + "\n";
                 String ope = "removeLast()\n";
