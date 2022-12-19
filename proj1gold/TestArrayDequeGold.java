@@ -1,37 +1,56 @@
-import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class TestArrayDequeGold {
     @Test
-    public void testDeque() {
-        StudentArrayDeque<Integer> stu = new StudentArrayDeque<>();
-        ArrayDequeSolution<Integer> right = new ArrayDequeSolution<>();
-        int testTimes = 10000;
-        int maxValue = 100;
-        String ope = "";
-        for (int i = 0; i < testTimes; ++i) {
-            double choice = StdRandom.uniform();
-            Integer stuAnswer = 0, rightAnswer = 0;
-            if (choice < 0.2 &&!right.isEmpty() && !stu.isEmpty()) {
-                stuAnswer = stu.removeFirst();
-                rightAnswer = right.removeFirst();
-                ope += "removeFirst(): " + stuAnswer + "\n";
-            } else if (choice < 0.4 && !right.isEmpty() && !stu.isEmpty()) {
-                stuAnswer = stu.removeLast();
-                rightAnswer = right.removeLast();
-                ope += "removeLast(): " + stuAnswer + "\n";
-            } else if (choice < 0.7) {
-                int randomItem = StdRandom.uniform(maxValue);
-                ope += "addFirst(" + randomItem + ")\n";
-                stu.addFirst(randomItem);
-                right.addFirst(randomItem);
+    public void testStudentArrayDeque() {
+        StudentArrayDeque<Integer> testArray = new StudentArrayDeque<>();
+        ArrayDequeSolution<Integer> stdArray = new ArrayDequeSolution<>();
+        String log = "";
+        for (int i = 0; i < 1000; i++) {
+            if (stdArray.size() == 0) {
+                int addNumber = StdRandom.uniform(1000);
+                int headOrBack = StdRandom.uniform(2);
+                if (headOrBack == 0) {
+                    log = log + "addFirst(" + addNumber + ")\n";
+                    testArray.addFirst(addNumber);
+                    stdArray.addFirst(addNumber);
+                } else {
+                    log = log + "addLast(" + addNumber + ")\n";
+                    testArray.addLast(addNumber);
+                    stdArray.addLast(addNumber);
+                }
             } else {
-                int randomItem = StdRandom.uniform(maxValue);
-                ope += "addLast(" + randomItem + ")\n";
-                stu.addLast(randomItem);
-                right.addLast(randomItem);
+                int x = StdRandom.uniform(4);
+                int addNumber = StdRandom.uniform(1000);
+                Integer testremoveNumber = 1;
+                Integer stdremoveNumber = 1;
+                switch (x) {
+                    case 0:
+                        log = log + "addFirst(" + addNumber + ")\n";
+                        testArray.addFirst(addNumber);
+                        stdArray.addFirst(addNumber);
+                        break;
+                    case 1:
+                        log = log + "addLast(" + addNumber + ")\n";
+                        testArray.addLast(addNumber);
+                        stdArray.addLast(addNumber);
+                        break;
+                    case 2:
+                        log = log + "removeFirst()\n";
+                        testremoveNumber = testArray.removeFirst();
+                        stdremoveNumber = stdArray.removeFirst();
+                        break;
+                    case 3:
+                        log = log + "removeLast()\n";
+                        testremoveNumber = testArray.removeLast();
+                        stdremoveNumber = stdArray.removeLast();
+                        break;
+                    default:
+                }
+                assertEquals(log, stdremoveNumber, testremoveNumber);
             }
-            assertEquals(ope, rightAnswer, stuAnswer);
         }
+
     }
 }
