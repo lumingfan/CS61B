@@ -11,16 +11,20 @@ public class TestArrayDequeGold {
         // String ope = "\n";
         for (int i = 0; i < testTimes; ++i) {
             double choice = StdRandom.uniform();
+            int stuAnswer = 0, rightAnswer = 0;
+            String ope = "";
             if (choice < 0.2 &&!right.isEmpty() && !stu.isEmpty()) {
                 // ope += "removeFirst(): " + stuRemoveFirst + "\n";
                 // String ope = "removeFirst(): " + stuRemoveFirst + "\n";
-                String ope = "removeFirst()\n";
-                assertEquals(ope, right.removeFirst(), stu.removeFirst());
+                stuAnswer = stu.removeFirst();
+                rightAnswer = right.removeFirst();
+                ope = "removeFirst()\n";
             } else if (choice < 0.4 && !right.isEmpty() && !stu.isEmpty()) {
                 // ope += "removeLast(): " + stuRemoveLast + "\n";
                 // String ope = "removeLast(): " + stuRemoveLast + "\n";
-                String ope = "removeLast()\n";
-                assertEquals(ope, right.removeLast(), stu.removeLast());
+                stuAnswer = stu.removeLast();
+                rightAnswer = right.removeLast();
+                ope = "removeLast()\n";
             } else if (choice < 0.7) {
                 int randomItem = StdRandom.uniform(maxValue);
                 // ope += "addFirst(" + randomItem + ")\n";
@@ -32,6 +36,7 @@ public class TestArrayDequeGold {
                 stu.addLast(randomItem);
                 right.addLast(randomItem);
             }
+            assertEquals(ope, rightAnswer, stuAnswer);
         }
     }
 }
