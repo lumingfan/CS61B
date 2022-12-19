@@ -15,11 +15,11 @@ public class TestArrayDequeGold {
             if (choice < 0.2 &&!right.isEmpty()) {
                 stuAnswer = stu.removeFirst();
                 rightAnswer = right.removeFirst();
-                ope += "removeFirst(): " + stuAnswer + "\n";
+                ope += "removeFirst()\n";
             } else if (choice < 0.4 && !right.isEmpty()) {
                 stuAnswer = stu.removeLast();
                 rightAnswer = right.removeLast();
-                ope += "removeLast(): " + stuAnswer + "\n";
+                ope += "removeLast()\n";
             } else if (choice < 0.7) {
                 int randomItem = StdRandom.uniform(maxValue);
                 ope += "addFirst(" + randomItem + ")\n";
