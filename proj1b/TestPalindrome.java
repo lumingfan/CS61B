@@ -18,18 +18,17 @@ public class TestPalindrome {
 
     @Test
     public void testIsPalindrome() {
-        assertTrue(palindrome.isPalindrome("noon"));
-        assertTrue(palindrome.isPalindrome("a"));
-        assertFalse(palindrome.isPalindrome("Aa"));
+        assertTrue(palindrome.isPalindrome("chchchhchchc"));
+        for (char ch = 0; ch < 128; ++ch) {
+            assertTrue(palindrome.isPalindrome("" + ch));
+        }
         assertTrue(palindrome.isPalindrome(""));
-        assertFalse(palindrome.isPalindrome("persiflage"));
+        assertFalse(palindrome.isPalindrome("persiflagedasdsa"));
 
-        assertTrue(palindrome.isPalindrome("a", new OffByOne()));
-        assertFalse(palindrome.isPalindrome("noon", new OffByOne()));
-        assertTrue(palindrome.isPalindrome("ab", new OffByOne()));
-        assertTrue(palindrome.isPalindrome("ba", new OffByOne()));
-        assertTrue(palindrome.isPalindrome("flake", new OffByOne()));
-        assertFalse(palindrome.isPalindrome("persiflage", new OffByOne()));
+        for (char ch = 0; ch < 128; ++ch) {
+            assertTrue(palindrome.isPalindrome("" + ch, new OffByOne()));
+        }
+        assertFalse(palindrome.isPalindrome("zzzzffff", new OffByOne()));
+        assertTrue(palindrome.isPalindrome("aflzkeb", new OffByOne()));
     }
 }
-
