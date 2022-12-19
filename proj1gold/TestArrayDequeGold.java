@@ -6,33 +6,28 @@ public class TestArrayDequeGold {
     public void testDeque() {
         StudentArrayDeque<Integer> stu = new StudentArrayDeque<>();
         ArrayDequeSolution<Integer> right = new ArrayDequeSolution<>();
-        int testTimes = 1000;
+        int testTimes = 10000;
         int maxValue = 100;
-        // String ope = "\n";
+        String ope = "";
         for (int i = 0; i < testTimes; ++i) {
             double choice = StdRandom.uniform();
-            int stuAnswer = 0, rightAnswer = 0;
-            String ope = "";
+            Integer stuAnswer = 0, rightAnswer = 0;
             if (choice < 0.2 &&!right.isEmpty() && !stu.isEmpty()) {
-                // ope += "removeFirst(): " + stuRemoveFirst + "\n";
-                // String ope = "removeFirst(): " + stuRemoveFirst + "\n";
                 stuAnswer = stu.removeFirst();
                 rightAnswer = right.removeFirst();
-                ope = "removeFirst()\n";
+                ope += "removeFirst(): " + stuAnswer + "\n";
             } else if (choice < 0.4 && !right.isEmpty() && !stu.isEmpty()) {
-                // ope += "removeLast(): " + stuRemoveLast + "\n";
-                // String ope = "removeLast(): " + stuRemoveLast + "\n";
                 stuAnswer = stu.removeLast();
                 rightAnswer = right.removeLast();
-                ope = "removeLast()\n";
+                ope += "removeLast(): " + stuAnswer + "\n";
             } else if (choice < 0.7) {
                 int randomItem = StdRandom.uniform(maxValue);
-                // ope += "addFirst(" + randomItem + ")\n";
+                ope += "addFirst(" + randomItem + ")\n";
                 stu.addFirst(randomItem);
                 right.addFirst(randomItem);
             } else {
                 int randomItem = StdRandom.uniform(maxValue);
-                // ope += "addLast(" + randomItem + ")\n";
+                ope += "addLast(" + randomItem + ")\n";
                 stu.addLast(randomItem);
                 right.addLast(randomItem);
             }
