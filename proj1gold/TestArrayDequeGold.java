@@ -6,7 +6,7 @@ public class TestArrayDequeGold {
     public void testDeque() {
         StudentArrayDeque<Integer> stu = new StudentArrayDeque<>();
         ArrayDequeSolution<Integer> right = new ArrayDequeSolution<>();
-        int testTimes = 100;
+        int testTimes = 1000;
         int maxValue = 100;
         // String ope = "\n";
         for (int i = 0; i < testTimes; ++i) {
