@@ -12,19 +12,19 @@ public class TestArrayDequeGold {
         for (int i = 0; i < testTimes; ++i) {
             double choice = StdRandom.uniform();
             if (choice < 0.2 && !stu.isEmpty() && !right.isEmpty()) {
-                Integer stuRemoveFirst = stu.removeFirst();
-                Integer rightRemoveFirst = right.removeFirst();
+                stu.removeFirst();
+                right.removeFirst();
                 // ope += "removeFirst(): " + stuRemoveFirst + "\n";
                 // String ope = "removeFirst(): " + stuRemoveFirst + "\n";
                 String ope = "removeFirst()\n";
-                assertEquals(ope, stuRemoveFirst, rightRemoveFirst);
+                assertEquals(ope, stu.get(0), right.get(0));
             } else if (choice < 0.4 && !stu.isEmpty() && !right.isEmpty()) {
-                Integer stuRemoveLast = stu.removeLast();
-                Integer rightRemoveLast = right.removeLast();
+                stu.removeLast();
+                right.removeLast();
                 // ope += "removeLast(): " + stuRemoveLast + "\n";
                 // String ope = "removeLast(): " + stuRemoveLast + "\n";
                 String ope = "removeLast()\n";
-                assertEquals(ope, stuRemoveLast, rightRemoveLast);
+                assertEquals(ope, stu.get(stu.size() - 1), right.get(right.size() - 1));
             } else if (choice < 0.7) {
                 int randomItem = StdRandom.uniform(maxValue) - StdRandom.uniform(maxValue);
                 // ope += "addFirst(" + randomItem + ")\n";
