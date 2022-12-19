@@ -8,27 +8,29 @@ public class TestArrayDequeGold {
         ArrayDequeSolution<Integer> right = new ArrayDequeSolution<>();
         int testTimes = 10000;
         int maxValue = 10000;
-        String ope = "\n";
+        // String ope = "\n";
         for (int i = 0; i < testTimes; ++i) {
             double choice = StdRandom.uniform();
             if (choice < 0.2 && !stu.isEmpty() && !right.isEmpty()) {
                 Integer stuRemoveFirst = stu.removeFirst();
                 Integer rightRemoveFirst = right.removeFirst();
-                ope += "removeFirst(): " + stuRemoveFirst + "\n";
+                // ope += "removeFirst(): " + stuRemoveFirst + "\n";
+                String ope = "removeFirst(): " + stuRemoveFirst + "\n";
                 assertEquals(ope, stuRemoveFirst, rightRemoveFirst);
             } else if (choice < 0.4 && !stu.isEmpty() && !right.isEmpty()) {
                 Integer stuRemoveLast = stu.removeLast();
                 Integer rightRemoveLast = right.removeLast();
-                ope += "removeLast(): " + stuRemoveLast + "\n";
+                // ope += "removeLast(): " + stuRemoveLast + "\n";
+                String ope = "removeLast(): " + stuRemoveLast + "\n";
                 assertEquals(ope, stuRemoveLast, rightRemoveLast);
             } else if (choice < 0.7) {
                 int randomItem = StdRandom.uniform(maxValue) - StdRandom.uniform(maxValue);
-                ope += "addFirst(" + randomItem + ")\n";
+                // ope += "addFirst(" + randomItem + ")\n";
                 stu.addFirst(randomItem);
                 right.addFirst(randomItem);
             } else {
                 int randomItem = StdRandom.uniform(maxValue) - StdRandom.uniform(maxValue);
-                ope += "addLast(" + randomItem + ")\n";
+                // ope += "addLast(" + randomItem + ")\n";
                 stu.addLast(randomItem);
                 right.addLast(randomItem);
             }
