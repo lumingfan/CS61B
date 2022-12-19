@@ -17,20 +17,19 @@ public class TestPalindrome {
     }
 
     @Test
-    public void TestIsPalindrome() {
+    public void testIsPalindrome() {
         assertTrue(palindrome.isPalindrome("noon"));
         assertTrue(palindrome.isPalindrome("a"));
         assertFalse(palindrome.isPalindrome("Aa"));
-        assertTrue(palindrome.isPalindrome(null));
         assertTrue(palindrome.isPalindrome(""));
         assertFalse(palindrome.isPalindrome("persiflage"));
 
         assertTrue(palindrome.isPalindrome("a", new OffByOne()));
         assertFalse(palindrome.isPalindrome("noon", new OffByOne()));
         assertTrue(palindrome.isPalindrome("ab", new OffByOne()));
-        assertTrue(palindrome.isPalindrome(null, new OffByOne()));
         assertTrue(palindrome.isPalindrome("ba", new OffByOne()));
         assertTrue(palindrome.isPalindrome("flake", new OffByOne()));
         assertFalse(palindrome.isPalindrome("persiflage", new OffByOne()));
     }
 }
+
