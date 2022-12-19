@@ -15,13 +15,15 @@ public class TestArrayDequeGold {
                 Integer stuRemoveFirst = stu.removeFirst();
                 Integer rightRemoveFirst = right.removeFirst();
                 // ope += "removeFirst(): " + stuRemoveFirst + "\n";
-                String ope = "removeFirst(): " + stuRemoveFirst + "\n";
+                // String ope = "removeFirst(): " + stuRemoveFirst + "\n";
+                String ope = "removeFirst()\n";
                 assertEquals(ope, stuRemoveFirst, rightRemoveFirst);
             } else if (choice < 0.4 && !stu.isEmpty() && !right.isEmpty()) {
                 Integer stuRemoveLast = stu.removeLast();
                 Integer rightRemoveLast = right.removeLast();
                 // ope += "removeLast(): " + stuRemoveLast + "\n";
-                String ope = "removeLast(): " + stuRemoveLast + "\n";
+                // String ope = "removeLast(): " + stuRemoveLast + "\n";
+                String ope = "removeLast()\n";
                 assertEquals(ope, stuRemoveLast, rightRemoveLast);
             } else if (choice < 0.7) {
                 int randomItem = StdRandom.uniform(maxValue) - StdRandom.uniform(maxValue);
