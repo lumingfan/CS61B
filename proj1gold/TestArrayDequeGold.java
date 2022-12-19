@@ -11,16 +11,16 @@ public class TestArrayDequeGold {
         // String ope = "\n";
         for (int i = 0; i < testTimes; ++i) {
             double choice = StdRandom.uniform();
-            if (choice < 0.2 &&!right.isEmpty()) {
+            if (choice < 0.2 &&!right.isEmpty() && !stu.isEmpty()) {
                 // ope += "removeFirst(): " + stuRemoveFirst + "\n";
                 // String ope = "removeFirst(): " + stuRemoveFirst + "\n";
                 String ope = "removeFirst()\n";
-                assertEquals(ope, stu.removeFirst(), right.removeFirst());
-            } else if (choice < 0.4 && !right.isEmpty()) {
+                assertEquals(ope, right.removeFirst(), stu.removeFirst());
+            } else if (choice < 0.4 && !right.isEmpty() && !stu.isEmpty()) {
                 // ope += "removeLast(): " + stuRemoveLast + "\n";
                 // String ope = "removeLast(): " + stuRemoveLast + "\n";
                 String ope = "removeLast()\n";
-                assertEquals(ope, stu.removeLast(), right.removeLast());
+                assertEquals(ope, right.removeLast(), stu.removeLast());
             } else if (choice < 0.7) {
                 int randomItem = StdRandom.uniform(maxValue);
                 // ope += "addFirst(" + randomItem + ")\n";
