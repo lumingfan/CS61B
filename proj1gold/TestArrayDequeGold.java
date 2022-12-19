@@ -6,32 +6,28 @@ public class TestArrayDequeGold {
     public void testDeque() {
         StudentArrayDeque<Integer> stu = new StudentArrayDeque<>();
         ArrayDequeSolution<Integer> right = new ArrayDequeSolution<>();
-        int testTimes = 10000;
-        int maxValue = 10000;
+        int testTimes = 100;
+        int maxValue = 100;
         // String ope = "\n";
         for (int i = 0; i < testTimes; ++i) {
             double choice = StdRandom.uniform();
             if (choice < 0.2 && !stu.isEmpty() && !right.isEmpty()) {
-                stu.removeFirst();
-                right.removeFirst();
                 // ope += "removeFirst(): " + stuRemoveFirst + "\n";
                 // String ope = "removeFirst(): " + stuRemoveFirst + "\n";
                 String ope = "removeFirst()\n";
-                assertEquals(ope, stu.get(0), right.get(0));
+                assertEquals(ope, stu.removeFirst(), right.removeFirst());
             } else if (choice < 0.4 && !stu.isEmpty() && !right.isEmpty()) {
-                stu.removeLast();
-                right.removeLast();
                 // ope += "removeLast(): " + stuRemoveLast + "\n";
                 // String ope = "removeLast(): " + stuRemoveLast + "\n";
                 String ope = "removeLast()\n";
-                assertEquals(ope, stu.get(stu.size() - 1), right.get(right.size() - 1));
+                assertEquals(ope, stu.removeLast(), right.removeLast());
             } else if (choice < 0.7) {
-                int randomItem = StdRandom.uniform(maxValue) - StdRandom.uniform(maxValue);
+                int randomItem = StdRandom.uniform(maxValue);
                 // ope += "addFirst(" + randomItem + ")\n";
                 stu.addFirst(randomItem);
                 right.addFirst(randomItem);
             } else {
-                int randomItem = StdRandom.uniform(maxValue) - StdRandom.uniform(maxValue);
+                int randomItem = StdRandom.uniform(maxValue);
                 // ope += "addLast(" + randomItem + ")\n";
                 stu.addLast(randomItem);
                 right.addLast(randomItem);
