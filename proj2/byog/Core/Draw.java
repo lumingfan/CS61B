@@ -14,8 +14,8 @@ public class Draw {
         }
     }
     public static void drawRec(Rectangle rec, TETile[][] tiles, TETile type) {
-        for (int x = rec.leftBottomPoint.x; x <= rec.rightTopPoint.x; ++x) {
-            drawCol(x, rec.leftBottomPoint.y, rec.rightTopPoint.y, tiles, type);
+        for (int x = rec.getLeftBottomPoint().getX(); x <= rec.getRightTopPoint().getX(); ++x) {
+            drawCol(x, rec.getLeftBottomPoint().getY(), rec.getRightTopPoint().getY(), tiles, type);
         }
     }
 
@@ -32,10 +32,10 @@ public class Draw {
     }
 
     public static void drawWall(Rectangle rec, TETile[][] tiles, TETile type) {
-        int leftBottomX = rec.leftBottomPoint.x;
-        int leftBottomY = rec.leftBottomPoint.y;
-        int rightTopX = rec.rightTopPoint.x;
-        int rightTopY = rec.rightTopPoint.y;
+        int leftBottomX = rec.getLeftBottomPoint().getX();
+        int leftBottomY = rec.getLeftBottomPoint().getY();
+        int rightTopX = rec.getRightTopPoint().getX();
+        int rightTopY = rec.getRightTopPoint().getY();
         drawCol(leftBottomX - 1, leftBottomY, rightTopY, tiles, type);
         drawCol(rightTopX + 1, leftBottomY, rightTopY, tiles, type);
 
