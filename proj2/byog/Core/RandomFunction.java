@@ -10,30 +10,24 @@ import static byog.Core.RandomUtils.uniform;
 public class RandomFunction {
     public static TETile tileRandom(int i) {
         switch (i) {
-            case 0 -> {
+            case 0 :
                 return Tileset.WATER;
-            }
-            case 1 -> {
+            case 1 :
                 return Tileset.SAND;
-            }
-            case 2 -> {
+            case 2 :
                 return Tileset.GRASS;
-            }
-            case 3 -> {
+            case 3 :
                 return Tileset.FLOWER;
-            }
-            case 4 -> {
+            case 4 :
                 return Tileset.LOCKED_DOOR;
-            }
-            case 5 -> {
+            case 5 :
                 return Tileset.TREE;
-            }
-            case 6 -> {
+            case 6 :
                 return Tileset.MOUNTAIN;
-            }
-            case 7 -> {
+            case 7 :
                 return Tileset.PLAYER;
-            }
+            default:
+                break;
         }
         return Tileset.NOTHING;
     }
@@ -58,7 +52,8 @@ public class RandomFunction {
         return uniform(random, yLength / 2) + 1;
     }
 
-    public static Rectangle generateRandomRec(int xBegin, int xEnd, int yBegin, int yEnd, Random random) {
+    public static Rectangle generateRandomRec(int xBegin, int xEnd, int yBegin,
+                                              int yEnd, Random random) {
         int x = generateRandomPosX(xBegin, xEnd, random);
         int y = generateRandomPosY(yBegin, yEnd, random);
         int xLength = generateRandomWidth(xEnd - xBegin, random);

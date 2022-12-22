@@ -1,10 +1,6 @@
 package byog.Core;
 
-import java.util.Random;
-
-import static byog.Core.RandomUtils.uniform;
-
-public class Rectangle implements Comparable<Rectangle>{
+public class Rectangle implements Comparable<Rectangle> {
     public Point leftBottomPoint;
     public Point rightTopPoint;
 
@@ -27,13 +23,13 @@ public class Rectangle implements Comparable<Rectangle>{
     }
 
     public static boolean isOverLapped(Rectangle lhs, Rectangle rhs) {
-        if (rhs.leftBottomPoint.x - 1> lhs.rightTopPoint.x) {
+        if (rhs.leftBottomPoint.x - 1 > lhs.rightTopPoint.x) {
             return false;
         }
         if (rhs.rightTopPoint.x < lhs.leftBottomPoint.x - 1) {
             return false;
         }
-        if (rhs.leftBottomPoint.y - 1> lhs.rightTopPoint.y) {
+        if (rhs.leftBottomPoint.y - 1 > lhs.rightTopPoint.y) {
             return false;
         }
         if (rhs.rightTopPoint.y < lhs.leftBottomPoint.y - 1) {
@@ -45,44 +41,53 @@ public class Rectangle implements Comparable<Rectangle>{
     public static Rectangle checkHall(Rectangle lhs, Rectangle rhs, int direction) {
         Rectangle returnRec = null;
         switch (direction) {
-            case 0 -> {
+            case 0 : {
                 if (lhs.leftBottomPoint.x > rhs.rightTopPoint.x) {
                     for (int i = lhs.leftBottomPoint.y; i <= lhs.rightTopPoint.y; ++i) {
                         if (rhs.yInRec(i)) {
-                            returnRec = new Rectangle(rhs.rightTopPoint.x, i, lhs.leftBottomPoint.x - rhs.rightTopPoint.x + 1, 1);
+                            returnRec = new Rectangle(rhs.rightTopPoint.x, i,
+                                    lhs.leftBottomPoint.x - rhs.rightTopPoint.x + 1, 1);
                             break;
                         }
                     }
                 }
+                break;
             }
-            case 1 -> {
+            case 1 : {
                 if (lhs.leftBottomPoint.y > rhs.rightTopPoint.y) {
                     for (int i = lhs.leftBottomPoint.x; i <= lhs.rightTopPoint.x; ++i) {
                         if (rhs.xInRec(i)) {
-                            returnRec = new Rectangle(i, rhs.leftBottomPoint.y, 1, lhs.leftBottomPoint.y - rhs.rightTopPoint.y + 1);
+                            returnRec = new Rectangle(i, rhs.leftBottomPoint.y,
+                                    1, lhs.leftBottomPoint.y - rhs.rightTopPoint.y + 1);
                             break;
                         }
                     }
                 }
+                break;
             }
-            case 2 -> {
+            case 2 : {
                 if (lhs.rightTopPoint.x < rhs.leftBottomPoint.x) {
                     for (int i = lhs.leftBottomPoint.y; i <= lhs.rightTopPoint.y; ++i) {
                         if (rhs.yInRec(i)) {
-                            returnRec = new Rectangle(lhs.rightTopPoint.x, i, rhs.leftBottomPoint.x - lhs.rightTopPoint.x + 1, 1);
+                            returnRec = new Rectangle(lhs.rightTopPoint.x, i,
+                                    rhs.leftBottomPoint.x - lhs.rightTopPoint.x + 1, 1);
                         }
                     }
                 }
+                break;
             }
-            case 3 -> {
+            case 3 : {
                 if (lhs.rightTopPoint.y < rhs.leftBottomPoint.y) {
                     for (int i = lhs.leftBottomPoint.x; i <= lhs.rightTopPoint.x; ++i) {
                         if (rhs.xInRec(i)) {
-                            returnRec = new Rectangle(i, lhs.rightTopPoint.y, 1, rhs.leftBottomPoint.y - lhs.rightTopPoint.y + 1);
+                            returnRec = new Rectangle(i, lhs.rightTopPoint.y,
+                                    1, rhs.leftBottomPoint.y - lhs.rightTopPoint.y + 1);
                         }
                     }
                 }
+                break;
             }
+            default: break;
         }
         return returnRec;
     }

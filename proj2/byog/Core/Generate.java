@@ -8,18 +8,18 @@ import java.util.Set;
 import static byog.Core.RandomFunction.generateRandomRec;
 
 public class Generate {
-    public static  Rectangle[] generateMultiRec(int randomNum, int width, int height, Random random) {
-        Rectangle[] returnRec = new Rectangle[randomNum];
+    public static Rectangle[] generateMultiRec(int num, int width, int height, Random random) {
+        Rectangle[] returnRec = new Rectangle[num];
 
         int index = 0;
         int xBegin = 0, xEnd = width / 2, yBegin = 0, yEnd = height / 2;
         returnRec[index++] = generateRandomRec(xBegin, xEnd, yBegin, yEnd, random);
-        while (index != randomNum) {
-            if (index <= randomNum / 4) {
+        while (index != num) {
+            if (index <= num / 4) {
                 xBegin = 0; xEnd = width / 2; yBegin = 0; yEnd = height / 2;
-            } else if (index <= randomNum / 2){
+            } else if (index <= num / 2) {
                 xBegin = width / 2; xEnd = width;
-            } else if (index <= 3 * randomNum / 4) {
+            } else if (index <= 3 * num / 4) {
                 yBegin = height / 2; yEnd = height;
             } else {
                 xBegin = 0; xEnd = width / 2;
@@ -45,7 +45,9 @@ public class Generate {
     }
 
 
-    private static int setHall(Rectangle rec, Rectangle[] recArr, Rectangle[] mostHall, int index, Set<Rectangle> set) {
+    private static int setHall(
+            Rectangle rec, Rectangle[] recArr, Rectangle[] mostHall,
+            int index, Set<Rectangle> set) {
         Set<Integer> directSet = new HashSet<>();
         for (Rectangle resRec : recArr) {
             if (resRec != rec && !set.contains(resRec)) {

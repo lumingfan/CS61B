@@ -32,11 +32,15 @@ public class Draw {
     }
 
     public static void drawWall(Rectangle rec, TETile[][] tiles, TETile type) {
-        drawCol(rec.leftBottomPoint.x - 1, rec.leftBottomPoint.y, rec.rightTopPoint.y, tiles, type);
-        drawCol(rec.rightTopPoint.x + 1, rec.leftBottomPoint.y, rec.rightTopPoint.y, tiles, type);
+        int leftBottomX = rec.leftBottomPoint.x;
+        int leftBottomY = rec.leftBottomPoint.y;
+        int rightTopX = rec.rightTopPoint.x;
+        int rightTopY = rec.rightTopPoint.y;
+        drawCol(leftBottomX - 1, leftBottomY, rightTopY, tiles, type);
+        drawCol(rightTopX + 1, leftBottomY, rightTopY, tiles, type);
 
-        drawRow(rec.rightTopPoint.y + 1, rec.leftBottomPoint.x - 1, rec.rightTopPoint.x + 1, tiles, type);
-        drawRow(rec.leftBottomPoint.y - 1, rec.leftBottomPoint.x - 1, rec.rightTopPoint.x + 1, tiles, type);
+        drawRow(rightTopY + 1, leftBottomX - 1, rightTopX  + 1, tiles, type);
+        drawRow(leftBottomY - 1, leftBottomX - 1, rightTopX  + 1, tiles, type);
     }
 
 
@@ -44,7 +48,13 @@ public class Draw {
 
         for (int i = 1; i < tiles.length - 1; ++i) {
             for (int j = 1; j < tiles[i].length - 1; ++j) {
-                if (tiles[i][j] == Tileset.WALL && tiles[i - 1][j] == Tileset.WALL && tiles[i + 1][j] == Tileset.WALL) {
+                TETile tileType = tiles[i][j];
+                TETile tileTypePre = tiles[i - 1][j];
+                TETile tileTypeNext = tiles[i + 1][j];
+                boolean condition = false;
+                condition = tileType == Tileset.WALL && tileTypePre == Tileset.WALL;
+                condition = condition && tileTypeNext == Tileset.WALL;
+                if (condition) {
                     if (random.nextDouble() <= 0.5) {
                         tiles[i][j] = Tileset.LOCKED_DOOR;
                         return;
