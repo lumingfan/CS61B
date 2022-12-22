@@ -43,10 +43,12 @@ public class Rectangle implements Comparable<Rectangle> {
         switch (direction) {
             case 0 : {
                 if (lhs.getLeftBottomPoint().getX() > rhs.getRightTopPoint().getX()) {
-                    for (int i = lhs.getLeftBottomPoint().getY(); i <= lhs.getRightTopPoint().getY(); ++i) {
+                    for (int i = lhs.getLeftBottomPoint().getY();
+                         i <= lhs.getRightTopPoint().getY(); ++i) {
                         if (rhs.yInRec(i)) {
                             returnRec = new Rectangle(rhs.getRightTopPoint().getX(), i,
-                                    lhs.getLeftBottomPoint().getX() - rhs.getRightTopPoint().getX() + 1, 1);
+                                    lhs.getLeftBottomPoint().getX()
+                                            - rhs.getRightTopPoint().getX() + 1, 1);
                             break;
                         }
                     }
@@ -55,10 +57,12 @@ public class Rectangle implements Comparable<Rectangle> {
             }
             case 1 : {
                 if (lhs.getLeftBottomPoint().getY() > rhs.getRightTopPoint().getY()) {
-                    for (int i = lhs.getLeftBottomPoint().getX(); i <= lhs.getRightTopPoint().getX(); ++i) {
+                    for (int i = lhs.getLeftBottomPoint().getX();
+                         i <= lhs.getRightTopPoint().getX(); ++i) {
                         if (rhs.xInRec(i)) {
                             returnRec = new Rectangle(i, rhs.getLeftBottomPoint().getY(),
-                                    1, lhs.getLeftBottomPoint().getY() - rhs.getRightTopPoint().getY() + 1);
+                                    1, lhs.getLeftBottomPoint().getY()
+                                    - rhs.getRightTopPoint().getY() + 1);
                             break;
                         }
                     }
@@ -67,10 +71,12 @@ public class Rectangle implements Comparable<Rectangle> {
             }
             case 2 : {
                 if (lhs.getRightTopPoint().getX() < rhs.getLeftBottomPoint().getX()) {
-                    for (int i = lhs.getLeftBottomPoint().getY(); i <= lhs.getRightTopPoint().getY(); ++i) {
+                    for (int i = lhs.getLeftBottomPoint().getY();
+                         i <= lhs.getRightTopPoint().getY(); ++i) {
                         if (rhs.yInRec(i)) {
                             returnRec = new Rectangle(lhs.getRightTopPoint().getX(), i,
-                                    rhs.getLeftBottomPoint().getX() - lhs.getRightTopPoint().getX() + 1, 1);
+                                    rhs.getLeftBottomPoint().getX()
+                                            - lhs.getRightTopPoint().getX() + 1, 1);
                         }
                     }
                 }
@@ -78,10 +84,12 @@ public class Rectangle implements Comparable<Rectangle> {
             }
             case 3 : {
                 if (lhs.getRightTopPoint().getY() < rhs.getLeftBottomPoint().getY()) {
-                    for (int i = lhs.getLeftBottomPoint().getX(); i <= lhs.getRightTopPoint().getX(); ++i) {
+                    for (int i = lhs.getLeftBottomPoint().getX();
+                         i <= lhs.getRightTopPoint().getX(); ++i) {
                         if (rhs.xInRec(i)) {
                             returnRec = new Rectangle(i, lhs.getRightTopPoint().getY(),
-                                    1, rhs.getLeftBottomPoint().getY() - lhs.getRightTopPoint().getY() + 1);
+                                    1, rhs.getLeftBottomPoint().getY()
+                                    - lhs.getRightTopPoint().getY() + 1);
                         }
                     }
                 }
@@ -97,7 +105,8 @@ public class Rectangle implements Comparable<Rectangle> {
         if (getLeftBottomPoint().getX() == o.getLeftBottomPoint().getX()) {
             return getLeftBottomPoint().getY() - o.getLeftBottomPoint().getY();
         }
-        return getLeftBottomPoint().getX() - o.getLeftBottomPoint().getX() + getLeftBottomPoint().getY() - o.getLeftBottomPoint().getY();
+        return getLeftBottomPoint().getX() - o.getLeftBottomPoint().getX()
+                + getLeftBottomPoint().getY() - o.getLeftBottomPoint().getY();
     }
 
     public Point getLeftBottomPoint() {
