@@ -5,7 +5,7 @@ import java.util.Map;
 
 import static org.junit.Assert.*;
 
-public class TestUnionFInd {
+public class TestUnionFind {
     @Test
     public void testUnionFind() {
         UnionFind uf = new UnionFind(5);
