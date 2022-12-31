@@ -4,19 +4,21 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
 
-    // used to form percolated path
+    // used for judge if percolated
     private final WeightedQuickUnionUF set;
+
+    // used for judge if full
+    private final WeightedQuickUnionUF help;
 
     // used to judge if the site is open
     private final boolean[] open;
 
-    // used to judge if the site is full(only for the set.find() site)
-    private final boolean[] full;
     private final int N;
     private int openSites;
 
-    // if the system percolate
-    private boolean percolation = false;
+    // N * N is the top virtual site, N * N + 1 is the bottom virtual site
+    private final int topSite;
+    private final int bottomSite;
 
     private int rowColToIndex(int row, int col) {
         if (row < 0 || row >= N || col < 0 || col >= N) {
@@ -35,8 +37,12 @@ public class Percolation {
         this.N = N;
         this.openSites = 0;
         this.open = new boolean[N * N];
-        this.full = new boolean[N * N];
-        this.set = new WeightedQuickUnionUF(N * N);
+
+        // N * N is the top virtual site, N * N + 1 is the bottom virtual site
+        this.set = new WeightedQuickUnionUF(N * N + 2);
+        this.help = new WeightedQuickUnionUF(N * N + 1);
+        this.topSite = N * N;
+        this.bottomSite = N * N + 1;
     }
 
     /**
@@ -51,33 +57,35 @@ public class Percolation {
         ++this.openSites;
 
         if (row == 0) {
-            full[index] = true;
+            set.union(index, topSite);
+            help.union(index, topSite);
+        }
+        if (row == N - 1) {
+            set.union(index, bottomSite);
         }
 
         if (row > 0) {
             int upIndex = rowColToIndex(row - 1, col);
-            unionFull(index, upIndex);
+            unionOpen(index, upIndex);
         }
         if (row < N - 1) {
             int downIndex = rowColToIndex(row + 1, col);
-            unionFull(index, downIndex);
+            unionOpen(index, downIndex);
         }
         if (col > 0) {
             int leftIndex = rowColToIndex(row, col - 1);
-            unionFull(index, leftIndex);
+            unionOpen(index, leftIndex);
         }
         if (col < N - 1) {
             int rightIndex = rowColToIndex(row, col + 1);
-            unionFull(index, rightIndex);
+            unionOpen(index, rightIndex);
         }
     }
 
-    private void unionFull(int index, int adjIndex) {
+    private void unionOpen(int index, int adjIndex) {
         if (open[adjIndex]) {
             set.union(index, adjIndex);
-        }
-        if (full[adjIndex]) {
-            full[set.find(index)] = true;
+            help.union(index, adjIndex);
         }
     }
 
@@ -92,11 +100,7 @@ public class Percolation {
      * is the site (row, col) full ?
      */
     public boolean isFull(int row, int col) {
-        boolean retuenBoolean = full[set.find(rowColToIndex(row, col))];
-        if (row == N - 1 && retuenBoolean) {
-            percolation = true;
-        }
-        return retuenBoolean;
+        return help.connected(topSite, rowColToIndex(row, col));
     }
 
 
@@ -112,7 +116,7 @@ public class Percolation {
      * dose the system percolate ?
      */
     public boolean percolates() {
-        return percolation;
+        return set.connected(bottomSite, topSite);
     }
 
     /**

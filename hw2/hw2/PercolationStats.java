@@ -27,36 +27,32 @@ public class PercolationStats {
                     col = StdRandom.uniform(N);
                 }
                 percolation.open(row, col);
-                for (int j = 0; j < N; ++j) {
-                    if (percolation.isFull(N - 1, j)) {
-                        break;
-                    }
-                }
                 ++cnt;
             }
             counts[i] = 1.0 * cnt / (N * N);
         }
 
-        this.mean = mean(counts, T);
-        this.dev = stddev(counts, T, this.mean);
         this.T = T;
+        this.mean = mean(counts);
+        this.dev = stddev(counts);
+
     }
 
 
-    private double mean(double[] counts, int T) {
+    private double mean(double[] counts) {
         double sum = 0;
         for (double count : counts) {
             sum += count;
         }
-        return sum / T;
+        return sum / this.T;
     }
 
-    private double stddev(double[] counts, int T, double mean) {
+    private double stddev(double[] counts) {
         double sum = 0.0;
         for (double count : counts) {
-            sum += Math.pow(count - mean, 2);
+            sum += Math.pow(count - this.mean, 2);
         }
-        return Math.sqrt(sum / (T - 1));
+        return Math.sqrt(sum / (this.T - 1));
     }
 
     // sample mean of percolation threshold
@@ -80,7 +76,7 @@ public class PercolationStats {
     }
 
 
-    /*public static void main(String[] args) {
+/*    public static void main(String[] args) {
         PercolationStats ps = new PercolationStats(20, 5000, new PercolationFactory());
         System.out.println(ps.mean());
     }*/
