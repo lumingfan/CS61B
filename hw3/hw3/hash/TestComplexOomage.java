@@ -53,10 +53,11 @@ public class TestComplexOomage {
     }
 
     private ComplexOomage generateDeadSequence() {
-        int N = StdRandom.uniform(1, 10);
-        ArrayList<Integer> params = new ArrayList<>(N);
-        for (int i = 0; i < N; i += 1) {
-            params.add(StdRandom.uniform(0, 127) * 2);
+        List<Integer> params = new ArrayList<>();
+        params.add(StdRandom.uniform(0, 255));
+        int N = StdRandom.uniform(4, 10);
+        for (int i = 0; i < N; ++i) {
+            params.add(0);
         }
         return new ComplexOomage(params);
     }
