@@ -145,8 +145,8 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         }
 
         /* todo: Your code here! */
-        contents[size + 1] = new Node(item, priority);
-        swim(++size);
+        contents[++size] = new Node(item, priority);
+        swim(size);
     }
 
     /**
@@ -156,6 +156,9 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     @Override
     public T peek() {
         /* todo: Your code here! */
+        if (!inBounds(size)) {
+            return null;
+        }
         return contents[1].item();
     }
 
@@ -171,6 +174,9 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     @Override
     public T removeMin() {
         /* todo: Your code here! */
+        if (!inBounds(size)) {
+            return null;
+        }
         T returnItem = peek();
         swap(1, size);
         contents[size--] = null;
