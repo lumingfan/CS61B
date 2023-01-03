@@ -180,7 +180,9 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         T returnItem = peek();
         swap(1, size);
         contents[size--] = null;
-        sink(1);
+        if (inBounds(size)) {
+            sink(1);
+        }
         return returnItem;
     }
 
