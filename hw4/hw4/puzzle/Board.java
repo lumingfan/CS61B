@@ -53,10 +53,18 @@ public class Board implements WorldState {
         Iterable<Point> neighborPoints = blank.neighbors();
         for (Point neighbor : neighborPoints) {
             int[][] newTiles = Board.copy(tiles);
-            Point.swap(newTiles, blank, neighbor);
+            swap(newTiles, blank, neighbor);
             returnIter.add(new Board(newTiles));
         }
         return returnIter;
+    }
+
+    public void swap(int[][] tiles, Point lhs, Point rhs) {
+        if (lhs.inBound() && rhs.inBound()) {
+            int tile = lhs.getTile();
+            tiles[lhs.getX()][lhs.getY()] = rhs.getTile();
+            tiles[rhs.getX()][rhs.getY()] = tile;
+        }
     }
 
     public int hamming() {
@@ -228,14 +236,6 @@ public class Board implements WorldState {
 
         public int correctY(int tile) {
             return (tile - 1) % size();
-        }
-
-        public static void swap(int[][] tiles, Point lhs, Point rhs) {
-            if (lhs.inBound() && rhs.inBound()) {
-                int tile = lhs.getTile();
-                tiles[lhs.getX()][lhs.getY()] = rhs.getTile();
-                tiles[rhs.getX()][rhs.getY()] = tile;
-            }
         }
     }
 

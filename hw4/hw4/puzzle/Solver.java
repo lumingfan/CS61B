@@ -1,4 +1,5 @@
 package hw4.puzzle;
+
 import edu.princeton.cs.algs4.MinPQ;
 
 import java.util.ArrayList;
@@ -8,20 +9,14 @@ import java.util.List;
 public class Solver {
     private MinPQ<Node> heap;
     private Node goalNode;
-    // private Set<WorldState> set;
-    private int enqueueTimes = 0;
+
     public Solver(WorldState initial) {
         heap = new MinPQ<>(new NodeComparator());
-        // set = new HashSet<>();
         goalNode = null;
         heap.insert(new Node(initial, 0, new ArrayList<>()));
-
-        // test
-         increaseEnqueue();
-
-
         solve();
     }
+
     private void solve() {
         while (!heap.isEmpty()) {
             Node nowNode = heap.delMin();
@@ -34,21 +29,9 @@ public class Solver {
         }
     }
 
-    private void increaseEnqueue() {
-        ++enqueueTimes;
-    }
-
-    public int getEnqueueTimes() {
-        return enqueueTimes;
-    }
-
     private void solveNowNeighbor(Node now) {
         for (WorldState next : now.getNeighbors()) {
-            if (/*!set.contains(next)*/ !next.equals(now.getParent())) {
-
-                // test
-                 increaseEnqueue();
-
+            if (!next.equals(now.getParent())) {
                 heap.insert(new Node(next, now.getMoves() + 1, now.getPath()));
             }
         }
@@ -75,7 +58,7 @@ public class Solver {
         private int moves;
         private int estimatedValue;
 
-        public Node(WorldState state, int moves, List<WorldState> path) {
+        Node(WorldState state, int moves, List<WorldState> path) {
             this.state = state;
             this.path = new ArrayList<>(path);
             this.moves = moves;
@@ -103,21 +86,13 @@ public class Solver {
         public List<WorldState> getPath() {
             return path;
         }
+
         public Iterable<WorldState> getNeighbors() {
             return state.neighbors();
         }
 
         public int getPriority() {
-            return  getEstimatedValue() + getMoves();
-        }
-
-
-        public void addState(WorldState state) {
-            path.add(state);
-        }
-
-        public void changeMoves(int movement) {
-            moves += movement;
+            return getEstimatedValue() + getMoves();
         }
 
         @Override
@@ -127,6 +102,13 @@ public class Solver {
                 return other.state.equals(this.state);
             }
             return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return path.hashCode() * 31 * 31 * 31 + state.hashCode() * 31 * 31
+                    + moves * 31 + estimatedValue;
+
         }
 
         public WorldState getParent() {
