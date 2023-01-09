@@ -32,13 +32,13 @@ public class CommonBugDetector {
         @Override
         public Iterable<WorldState> neighbors() {
             switch (name) {
-                case('s'): return createWorldStateList(List.of('a', 'x'));
-                case('a'): return createWorldStateList(List.of('b'));
-                case('b'): return createWorldStateList(List.of('c'));
-                case('c'): return createWorldStateList(List.of('d'));
-                case('d'): return createWorldStateList(List.of('e'));
-                case('e'): return createWorldStateList(List.of('g'));
-                case('x'): return createWorldStateList(List.of('c'));
+                case ('s'): return createWorldStateList(List.of('a', 'x'));
+                case ('a'): return createWorldStateList(List.of('b'));
+                case ('b'): return createWorldStateList(List.of('c'));
+                case ('c'): return createWorldStateList(List.of('d'));
+                case ('d'): return createWorldStateList(List.of('e'));
+                case ('e'): return createWorldStateList(List.of('g'));
+                case ('x'): return createWorldStateList(List.of('c'));
                 default: return null;
             }
         }
@@ -79,8 +79,8 @@ public class CommonBugDetector {
 
         AlphabetEasyPuzzle aep = new AlphabetEasyPuzzle('a');
         Solver s3 = new Solver(aep);
-        System.out.println("TODO: Print out the number of total things ever"
-                           + " enqueued in your MinPQ and compare to the comments.");
+        System.out.println("the total number of items enqueued by s should be 25, "
+                + "and your answer is: " + s3.getEnqueueTimes());
         // if you print out the total number of items enqueued by s3
         // it should be approximately 25, not approximately 50.
     }
