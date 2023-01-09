@@ -59,11 +59,11 @@ public class Board implements WorldState {
         return returnIter;
     }
 
-    public void swap(int[][] tiles, Point lhs, Point rhs) {
+    private void swap(int[][] newTiles, Point lhs, Point rhs) {
         if (lhs.inBound() && rhs.inBound()) {
             int tile = lhs.getTile();
-            tiles[lhs.getX()][lhs.getY()] = rhs.getTile();
-            tiles[rhs.getX()][rhs.getY()] = tile;
+            newTiles[lhs.getX()][lhs.getY()] = rhs.getTile();
+            newTiles[rhs.getX()][rhs.getY()] = tile;
         }
     }
 
@@ -220,7 +220,7 @@ public class Board implements WorldState {
         }
 
         public boolean correctPos() {
-            return x * size() + y == getTile();
+            return x * size() + y + 1 == getTile();
         }
 
         public int correctDis() {

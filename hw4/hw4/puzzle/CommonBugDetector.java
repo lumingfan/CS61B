@@ -80,7 +80,7 @@ public class CommonBugDetector {
         AlphabetEasyPuzzle aep = new AlphabetEasyPuzzle('a');
         Solver s3 = new Solver(aep);
         System.out.println("the total number of items enqueued by s should be 25, "
-                + "and your answer is: " + s3.getEnqueueTimes());
+                + "and your answer is: ");
         // if you print out the total number of items enqueued by s3
         // it should be approximately 25, not approximately 50.
     }
