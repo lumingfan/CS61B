@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /**
  * Class for doing Radix sort
  *
@@ -5,6 +7,7 @@
  *
  */
 public class RadixSort {
+    private static final int BASE = 256;
     /**
      * Does LSD radix sort on the passed in array with the following restrictions:
      * The array can only have ASCII Strings (sequence of 1 byte characters)
@@ -16,8 +19,28 @@ public class RadixSort {
      * @return String[] the sorted array
      */
     public static String[] sort(String[] asciis) {
-        // TODO: Implement LSD Sort
-        return null;
+        // todo: Implement LSD Sort
+        if (asciis == null || asciis.length <= 1) {
+            return asciis;
+        }
+        int maxLength = findMaxLen(asciis);
+        String[] newAsciis = new String[asciis.length];
+        System.arraycopy(asciis, 0, newAsciis, 0, asciis.length);
+        for (int i = maxLength - 1; i >= 0; --i) {
+            sortHelperLSD(newAsciis, i);
+        }
+        return newAsciis;
+    }
+
+
+    private static int findMaxLen(String[] asciis) {
+        int max = 0;
+        for (String s : asciis) {
+            if (s.length() > max) {
+                max = s.length();
+            }
+        }
+        return max;
     }
 
     /**
@@ -28,8 +51,30 @@ public class RadixSort {
      */
     private static void sortHelperLSD(String[] asciis, int index) {
         // Optional LSD helper method for required LSD radix sort
-        return;
+        int[] count = new int[BASE + 1];
+        for (String s : asciis) {
+            ++count[getIndex(s, index) + 1];
+        }
+
+        for (int i = 1; i <= BASE; ++i) {
+            count[i] += count[i - 1];
+        }
+
+        String[] newAsciis = new String[asciis.length];
+        for (String s : asciis) {
+            newAsciis[count[getIndex(s, index)]++] = s;
+        }
+
+        System.arraycopy(newAsciis, 0, asciis, 0, newAsciis.length);
     }
+
+    private static int getIndex(String s, int index) {
+        if (index >= s.length()) {
+            return 0;
+        }
+        return s.charAt(index);
+    }
+
 
     /**
      * MSD radix sort helper function that recursively calls itself to achieve the sorted array.
