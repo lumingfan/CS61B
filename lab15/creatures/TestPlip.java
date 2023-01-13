@@ -1,13 +1,9 @@
 package creatures;
+import huglife.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import java.util.HashMap;
 import java.awt.Color;
-import huglife.Direction;
-import huglife.Action;
-import huglife.Occupant;
-import huglife.Impassible;
-import huglife.Empty;
 
 /** Tests the plip class   
  *  @authr FIXME
@@ -36,10 +32,16 @@ public class TestPlip {
 
     @Test
     public void testReplicate() {
-
+        Plip p = new Plip(2);
+        assertEquals(2, p.energy(), 0.01);
+        assertEquals(new Color(99, 255, 76), p.color());
+        Plip newP = p.replicate();
+        assertNotSame(newP, p);
+        assertEquals(p.energy(), newP.energy(), 0.01);
+        assertEquals(p.color(), newP.color());
     }
 
-    //@Test
+    @Test
     public void testChoose() {
         Plip p = new Plip(1.2);
         HashMap<Direction, Occupant> surrounded = new HashMap<Direction, Occupant>();
@@ -56,6 +58,43 @@ public class TestPlip {
         Action expected = new Action(Action.ActionType.STAY);
 
         assertEquals(expected, actual);
+
+        HashMap<Direction, Occupant> newSurrounded = new HashMap<>();
+        newSurrounded.put(Direction.TOP, new Empty());
+        newSurrounded.put(Direction.BOTTOM, new Impassible());
+        newSurrounded.put(Direction.LEFT, new Empty());
+        newSurrounded.put(Direction.RIGHT, new Impassible());
+
+        int topTimes = 0;
+        int bottomTimes = 0;
+        int leftTimes = 0;
+        int rightTimes = 0;
+        int testTimes = 100000;
+        for (int i = 0; i < testTimes; ++i) {
+            assertEquals(Action.ActionType.REPLICATE, p.chooseAction(newSurrounded).type);
+            switch (p.chooseAction(newSurrounded).dir) {
+                case TOP:
+                    ++topTimes;
+                    break;
+                case BOTTOM:
+                    ++bottomTimes;
+                    break;
+                case LEFT:
+                    ++leftTimes;
+                    break;
+                case RIGHT:
+                    ++rightTimes;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        assertEquals(0, rightTimes);
+        assertEquals(0, bottomTimes);
+        assertEquals(0.5, topTimes * 1.0 / testTimes, 0.01);
+        assertEquals(0.5, leftTimes * 1.0 / testTimes, 0.01);
+
     }
 
     public static void main(String[] args) {

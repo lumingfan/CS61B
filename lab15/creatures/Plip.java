@@ -20,6 +20,20 @@ public class Plip extends Creature {
     /** blue color. */
     private int b;
 
+    private static final int PLIP_RED = 99;
+    private static final int PLIP_BULE = 76;
+    private static final int MIN_PLIP_GREEN = 63;
+
+    private static final double MOVE_LOSE_ENERGY = 0.15;
+    private static final double STAY_GAIN_ENERGY = 0.2;
+    private static final double REPLICATE_ENERGY = 1.0;
+    private static final double REPLICATE_ENERGY_FACTOR = 0.5;
+    private static final double MAX_ENERGY = 2.0;
+    private static final int GREEN_FACTOR = (int) ((255 - MIN_PLIP_GREEN) / MAX_ENERGY);
+
+    private static final double ESCAPE_PROBABILITY = 0.5;
+
+
     /** creates plip with energy equal to E. */
     public Plip(double e) {
         super("plip");
@@ -42,8 +56,14 @@ public class Plip extends Creature {
      *  that you get this exactly correct.
      */
     public Color color() {
-        g = 63;
+        r = PLIP_RED;
+        b = PLIP_BULE;
+        g = getColorByEnergy(energy);
         return color(r, g, b);
+    }
+
+    private int getColorByEnergy(double energy) {
+        return MIN_PLIP_GREEN + (int) (GREEN_FACTOR * energy);
     }
 
     /** Do nothing with C, Plips are pacifists. */
@@ -55,11 +75,24 @@ public class Plip extends Creature {
      *  private static final variable. This is not required for this lab.
      */
     public void move() {
+        energy -= MOVE_LOSE_ENERGY;
     }
 
 
     /** Plips gain 0.2 energy when staying due to photosynthesis. */
     public void stay() {
+        energy += STAY_GAIN_ENERGY;
+        if (checkEnergyFull()) {
+            setFullEnergy();
+        }
+    }
+
+    private boolean checkEnergyFull() {
+        return energy > MAX_ENERGY;
+    }
+
+    private void setFullEnergy() {
+        energy = MAX_ENERGY;
     }
 
     /** Plips and their offspring each get 50% of the energy, with none
@@ -67,7 +100,12 @@ public class Plip extends Creature {
      *  Plip.
      */
     public Plip replicate() {
-        return this;
+        energy = energy * REPLICATE_ENERGY_FACTOR;
+        return new Plip(energy);
+    }
+
+    private boolean shouldReplicate() {
+        return energy > REPLICATE_ENERGY;
     }
 
     /** Plips take exactly the following actions based on NEIGHBORS:
@@ -81,6 +119,21 @@ public class Plip extends Creature {
      *  for an example to follow.
      */
     public Action chooseAction(Map<Direction, Occupant> neighbors) {
+        List<Direction> empties = getNeighborsOfType(neighbors, "empty");
+        if (empties.size() == 0) {
+            return new Action(Action.ActionType.STAY);
+        }
+        if (shouldReplicate()) {
+            return new Action(Action.ActionType.REPLICATE, HugLifeUtils.randomEntry(empties));
+        }
+
+        List<Direction> creatures = getNeighborsOfType(neighbors, "clorus");
+        if (creatures.size() != 0) {
+            if (HugLifeUtils.random() < ESCAPE_PROBABILITY) {
+                return new Action(Action.ActionType.MOVE, HugLifeUtils.randomEntry(empties));
+            }
+        }
+
         return new Action(Action.ActionType.STAY);
     }
 
