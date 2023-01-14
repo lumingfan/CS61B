@@ -53,7 +53,7 @@ public class Rasterer {
                 return i;
             }
         }
-        return -1;
+        return MAX_DEPTH;
     }
 
     public int calTileNum(int depth) {
@@ -122,14 +122,11 @@ public class Rasterer {
 
         RequestInfo paramsInfo = resolute(params);
         int depth = calDepth(paramsInfo.getLonDPP());
-        boolean query_success = (depth != -1 && validate(paramsInfo));
+        boolean query_success = validate(paramsInfo);
 
         Map<String, Object> results = new HashMap<>();
         results.put("query_success", query_success);
         results.put("depth", depth);
-        if (!query_success) {
-            return results;
-        }
 
         int tileNum = calTileNum(depth);
         double aveLatDis = calAveDis(ROOT_LRLAT, ROOT_ULLAT, tileNum);
@@ -145,14 +142,14 @@ public class Rasterer {
         String[][] tiles = new String[rows][cols];
         for (int row = beginRow; row <= endRow; ++row) {
             for (int col = beginCol; col <= endCol; ++col) {
-                tiles[row][col] = "d" + depth + "_x" + row + "_y" + col + ".png";
+                tiles[row - beginRow][col - beginCol] = "d" + depth + "_x" + col + "_y" + row + ".png";
             }
         }
 
         double raster_ul_lon = ROOT_ULLON + beginCol * aveLonDis;
-        double raster_lr_lon = ROOT_ULLON + endCol * aveLonDis;
+        double raster_lr_lon = ROOT_ULLON + (endCol + 1) * aveLonDis;
         double raster_ul_lat = ROOT_ULLAT - beginRow * aveLatDis;
-        double raster_lr_lat = ROOT_ULLAT - endRow * aveLatDis;
+        double raster_lr_lat = ROOT_ULLAT - (endRow + 1) * aveLatDis;
 
         results.put("raster_ul_lon", raster_ul_lon);
         results.put("raster_lr_lon", raster_lr_lon);
