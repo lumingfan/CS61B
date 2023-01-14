@@ -1,3 +1,4 @@
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -132,10 +133,10 @@ public class Rasterer {
         double aveLatDis = calAveDis(ROOT_LRLAT, ROOT_ULLAT, tileNum);
         double aveLonDis = calAveDis(ROOT_ULLON, ROOT_LRLON, tileNum);
 
-        int beginRow = calBeginRow(paramsInfo, aveLatDis);
-        int endRow = calEndRow(paramsInfo, aveLatDis);
-        int beginCol = calBeginCol(paramsInfo, aveLonDis);
-        int endCol = calEndCol(paramsInfo, aveLonDis);
+        int beginRow = Math.min(calBeginRow(paramsInfo, aveLatDis), tileNum - 1);
+        int endRow = Math.min(calEndRow(paramsInfo, aveLatDis), tileNum - 1);
+        int beginCol = Math.min(calBeginCol(paramsInfo, aveLonDis), tileNum - 1);
+        int endCol = Math.min(calEndCol(paramsInfo, aveLonDis), tileNum - 1);
 
         int rows = endRow - beginRow + 1;
         int cols = endCol - beginCol + 1;
