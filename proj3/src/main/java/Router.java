@@ -2,26 +2,8 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * This class provides a shortestPath method for finding routes between two points
- * on the map. Start by using Dijkstra's, and if your code isn't fast enough for your
- * satisfaction (or the autograder), upgrade your implementation by switching it to A*.
- * Your code will probably not be fast enough to pass the autograder unless you use A*.
- * The difference between A* and Dijkstra's is only a couple of lines of code, and boils
- * down to the priority you use to order your vertices.
- */
+
 public class Router {
-    /**
-     * Return a List of longs representing the shortest path from the node
-     * closest to a start location and the node closest to the destination
-     * location.
-     * @param g The graph to use.
-     * @param stlon The longitude of the start location.
-     * @param stlat The latitude of the start location.
-     * @param destlon The longitude of the destination location.
-     * @param destlat The latitude of the destination location.
-     * @return A list of node id's in the order visited on the shortest path.
-     */
     public static List<Long> shortestPath(GraphDB g, double stlon, double stlat,
                                           double destlon, double destlat) {
         PriorityQueue<NodeDis> heap = new PriorityQueue<>();
@@ -85,109 +67,12 @@ public class Router {
         }
     }
 
-    /**
-     * Create the list of directions corresponding to a route on the graph.
-     * @param g The graph to use.
-     * @param route The route to translate into directions. Each element
-     *              corresponds to a node from the graph in the route.
-     * @return A list of NavigatiionDirection objects corresponding to the input
-     * route.
-     */
+   
     public static List<NavigationDirection> routeDirections(GraphDB g, List<Long> route) {
-        List<NavigationDirection> navigationDirections = new LinkedList<>();
-        double initialAngle = g.bearing(route.get(0), route.get(1));
-        double dis = g.distance(route.get(0), route.get(1));
-        String lastWay = getWayName(g, route.get(0));
-        String way = getWayName(g, route.get(1));
-        long lastNode = route.get(0);
-        long newNode = route.get(1);
-        int direction = NavigationDirection.START;
-
-        if (isChangingDirection(g, lastNode, newNode, initialAngle) && !way.equals(lastWay)) {
-            direction = calDirection(g, lastNode, newNode, initialAngle);
-            navigationDirections.add(new NavigationDirection(direction, lastWay, dis));
-            dis = 0.0;
-            lastWay = way;
-            initialAngle = g.bearing(lastNode, newNode);
-        }
-
-        lastNode = route.get(1);
-
-        int index = 0;
-        for (Long node : route) {
-            if (index < 2) {
-                index++;
-                continue;
-            }
-
-            way = getWayName(g, node);
-            if (isChangingDirection(g, lastNode, node, initialAngle) && !way.equals(lastWay)) {
-                direction = calDirection(g, lastNode, node, initialAngle);
-                navigationDirections.add(new NavigationDirection(direction, lastWay, dis));
-                dis = 0.0;
-                lastWay = way;
-                initialAngle = g.bearing(lastNode, node);
-            }
-            dis += g.distance(lastNode, node);
-            lastNode = node;
-        }
-
-        navigationDirections.add(new NavigationDirection(direction, lastWay, dis));
-        return navigationDirections; // FIXME
+        return null // FIXME
     }
 
-    private static int calDirection(GraphDB g, long last, long now, double angle) {
-        double newAngle = g.bearing(last, now);
-        double dev = calAngleDev(newAngle, angle);
-        return getDirectionByAngle(dev);
-    }
-
-    private static boolean isChangingDirection(GraphDB g, long last, long now, double angle) {
-        return calDirection(g, last, now, angle) != NavigationDirection.STRAIGHT;
-    }
-
-    private static double calAngleDev(double newAngle, double oldAngle) {
-        return oldAngle - newAngle;
-    }
-
-
-    private static String getWayName(GraphDB g, long node) {
-        String name = g.getNode(node).getWayName();
-        return name == null ? NavigationDirection.UNKNOWN_ROAD : name;
-    }
-
-
-    private static int getDirectionByAngle(double angle) {
-        int direction;
-        if (angle <= 15 && angle >= -15) {
-            direction = NavigationDirection.STRAIGHT;
-        } else if (angle <= 30 && angle >= -30) {
-            if (angle >= 15) {
-                direction = NavigationDirection.SLIGHT_RIGHT;
-            } else {
-                direction = NavigationDirection.SLIGHT_LEFT;
-            }
-        } else if (angle <= 100 && angle >= -100) {
-            if (angle >= 30) {
-                direction = NavigationDirection.RIGHT;
-            } else {
-                direction = NavigationDirection.LEFT;
-            }
-        } else {
-            if (angle >= 100) {
-                direction = NavigationDirection.SHARP_RIGHT;
-            } else {
-                direction = NavigationDirection.SHARP_LEFT;
-            }
-        }
-        return direction;
-    }
-
-
-    /**
-     * Class to represent a navigation direction, which consists of 3 attributes:
-     * a direction to go, a way, and the distance to travel for.
-     */
+ 
     public static class NavigationDirection {
 
         /** Integer constants representing directions. */
