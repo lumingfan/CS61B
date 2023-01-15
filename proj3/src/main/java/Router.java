@@ -40,6 +40,9 @@ public class Router {
         }
 
         LinkedList<Long> returnPath = new LinkedList<>();
+        if (path.get(end) == null) {
+            return returnPath;
+        }
         while (end != start) {
             returnPath.addFirst(end);
             end = path.get(end);
