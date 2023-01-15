@@ -120,6 +120,7 @@ public class GraphBuildingHandler extends DefaultHandler {
                 g.addWay(way);
                 for (Node node : way.getWay()) {
                     Node lastNode = lastNodeId == 0 ? null : g.getNode(lastNodeId);
+                    node.setWayName(way.getName());
                     if (lastNode != null) {
                         Edge edge = new Edge(lastNode, node);
                         node.addEdge(edge);

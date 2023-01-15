@@ -1,4 +1,3 @@
-import javax.swing.text.Position;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -7,6 +6,7 @@ public class Node {
     private double lat;
     private double lon;
     private String name;
+    private String wayName = null;
     private Set<Edge> edgeSet;
 
     public Node(long id, double lat, double lon) {
@@ -70,5 +70,11 @@ public class Node {
         return adjNodeId;
     }
 
+    public String getWayName() {
+        return wayName;
+    }
 
+    public void setWayName(String wayName) {
+        this.wayName = wayName;
+    }
 }

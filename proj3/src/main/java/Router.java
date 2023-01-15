@@ -1,5 +1,4 @@
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,7 +24,65 @@ public class Router {
      */
     public static List<Long> shortestPath(GraphDB g, double stlon, double stlat,
                                           double destlon, double destlat) {
-        return null; // FIXME
+        PriorityQueue<NodeDis> heap = new PriorityQueue<>();
+        Set<Long> set = new HashSet<>();
+        Map<Long, Double> dist = new HashMap<>();
+        Map<Long, Long> path = new HashMap<>();
+
+        long start = g.closest(stlon, stlat);
+        long end = g.closest(destlon, destlat);
+        dist.put(start, 0.0);
+
+        heap.add(new NodeDis(start, 0.0));
+
+        while (!heap.isEmpty()) {
+            NodeDis now = heap.poll();
+            set.add(now.id);
+            if (now.id == end) {
+                break;
+            }
+
+            for (Long adj : g.adjacent(now.id)) {
+                double distance = dist.get(now.id) + g.distance(now.id, adj);
+
+                if (set.contains(adj)) {
+                    continue;
+                }
+
+                if (!dist.containsKey(adj) || dist.get(adj) > distance) {
+                    path.put(adj, now.id);
+                    dist.put(adj, distance);
+                    heap.add(new NodeDis(adj, distance + g.distance(adj, end)));
+                }
+            }
+        }
+
+        LinkedList<Long> returnPath = new LinkedList<>();
+        while (end != start) {
+            returnPath.addFirst(end);
+            end = path.get(end);
+        }
+        returnPath.addFirst(start);
+        return returnPath;
+    }
+
+    private static class NodeDis implements Comparable<NodeDis> {
+        private long id;
+        private double priority;
+        public NodeDis(long id, double priority) {
+            this.id = id;
+            this.priority = priority;
+        }
+
+        @Override
+        public int compareTo(NodeDis o) {
+            double diff = priority - o.priority;
+            if (diff < 0) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
     }
 
     /**
@@ -37,7 +94,93 @@ public class Router {
      * route.
      */
     public static List<NavigationDirection> routeDirections(GraphDB g, List<Long> route) {
-        return null; // FIXME
+        List<NavigationDirection> navigationDirections = new LinkedList<>();
+        double initialAngle = g.bearing(route.get(0), route.get(1));
+        double dis = g.distance(route.get(0), route.get(1));
+        String lastWay = getWayName(g, route.get(0));
+        String way = getWayName(g, route.get(1));
+        long lastNode = route.get(0);
+        long newNode = route.get(1);
+        int direction = NavigationDirection.START;
+
+        if (isChangingDirection(g, lastNode, newNode, initialAngle) && !way.equals(lastWay)) {
+            direction = calDirection(g, lastNode, newNode, initialAngle);
+            navigationDirections.add(new NavigationDirection(direction, lastWay, dis));
+            dis = 0.0;
+            lastWay = way;
+            initialAngle = g.bearing(lastNode, newNode);
+        }
+
+        lastNode = route.get(1);
+
+        int index = 0;
+        for (Long node : route) {
+            if (index < 2) {
+                index++;
+                continue;
+            }
+
+            way = getWayName(g, node);
+            if (isChangingDirection(g, lastNode, node, initialAngle) && !way.equals(lastWay)) {
+                direction = calDirection(g, lastNode, node, initialAngle);
+                navigationDirections.add(new NavigationDirection(direction, lastWay, dis));
+                dis = 0.0;
+                lastWay = way;
+                initialAngle = g.bearing(lastNode, node);
+            }
+            dis += g.distance(lastNode, node);
+            lastNode = node;
+        }
+
+        navigationDirections.add(new NavigationDirection(direction, lastWay, dis));
+        return navigationDirections; // FIXME
+    }
+
+    private static int calDirection(GraphDB g, long last, long now, double angle) {
+        double newAngle = g.bearing(last, now);
+        double dev = calAngleDev(newAngle, angle);
+        return getDirectionByAngle(dev);
+    }
+
+    private static boolean isChangingDirection(GraphDB g, long last, long now, double angle) {
+        return calDirection(g, last, now, angle) != NavigationDirection.STRAIGHT;
+    }
+
+    private static double calAngleDev(double newAngle, double oldAngle) {
+        return oldAngle - newAngle;
+    }
+
+
+    private static String getWayName(GraphDB g, long node) {
+        String name = g.getNode(node).getWayName();
+        return name == null ? NavigationDirection.UNKNOWN_ROAD : name;
+    }
+
+
+    private static int getDirectionByAngle(double angle) {
+        int direction;
+        if (angle <= 15 && angle >= -15) {
+            direction = NavigationDirection.STRAIGHT;
+        } else if (angle <= 30 && angle >= -30) {
+            if (angle >= 15) {
+                direction = NavigationDirection.SLIGHT_RIGHT;
+            } else {
+                direction = NavigationDirection.SLIGHT_LEFT;
+            }
+        } else if (angle <= 100 && angle >= -100) {
+            if (angle >= 30) {
+                direction = NavigationDirection.RIGHT;
+            } else {
+                direction = NavigationDirection.LEFT;
+            }
+        } else {
+            if (angle >= 100) {
+                direction = NavigationDirection.SHARP_RIGHT;
+            } else {
+                direction = NavigationDirection.SHARP_LEFT;
+            }
+        }
+        return direction;
     }
 
 
@@ -92,6 +235,12 @@ public class Router {
             this.direction = STRAIGHT;
             this.way = UNKNOWN_ROAD;
             this.distance = 0.0;
+        }
+
+        public NavigationDirection(int direction, String way, double dis) {
+            this.direction = direction;
+            this.way = way;
+            this.distance = dis;
         }
 
         public String toString() {
