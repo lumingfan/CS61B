@@ -40,7 +40,7 @@ public class Router {
         }
 
         LinkedList<Long> returnPath = new LinkedList<>();
-        if (path.get(end) == null) {
+        if (!path.containsKey(end)) {
             return returnPath;
         }
         while (end != start) {
