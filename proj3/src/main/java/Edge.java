@@ -1,5 +1,4 @@
 public class Edge {
-    // rebase test
     private Node nodeOne;
     private Node nodeTwo;
 
