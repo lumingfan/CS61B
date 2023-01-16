@@ -1,4 +1,11 @@
-import java.util.*;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -75,7 +82,7 @@ public class Router {
     private static class NodeDis implements Comparable<NodeDis> {
         private long id;
         private double priority;
-        public NodeDis(long id, double priority) {
+        NodeDis(long id, double priority) {
             this.id = id;
             this.priority = priority;
         }
