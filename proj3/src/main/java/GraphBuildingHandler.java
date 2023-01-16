@@ -99,7 +99,8 @@ public class GraphBuildingHandler extends DefaultHandler {
         } else if (activeState.equals("node") && qName.equals("tag") && attributes.getValue("k")
                 .equals("name")) {
             Node nowNode = g.getNode(nowNodeId);
-            nowNode.setName(attributes.getValue("v"));
+            String nowNodeName = attributes.getValue("v");
+            nowNode.setName(nowNodeName);
         }
     }
 

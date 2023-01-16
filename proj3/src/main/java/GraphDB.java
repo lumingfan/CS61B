@@ -1,16 +1,21 @@
 import org.xml.sax.SAXException;
 
+import java.util.Map;
+import java.util.Set;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import java.util.Map;
-import java.util.Set;
+
 import java.util.HashMap;
 import java.util.HashSet;
+
 import java.util.ArrayList;
+
+
 /**
  * Graph for storing all of the intersection (vertex) and road (edge) information.
  * Uses your GraphBuildingHandler to convert the XML files into a graph. Your
@@ -24,6 +29,7 @@ public class GraphDB {
     /** Your instance variables for storing the graph. You should consider
      * creating helper classes, e.g. Node, Edge, etc. */
     Map<Long, Node> nodeMap;
+    Map<Long, Node> freeNodeMap;
     Set<Way> waySet;
 
     /**
@@ -34,6 +40,7 @@ public class GraphDB {
     public GraphDB(String dbPath) {
         try {
             nodeMap = new HashMap<>();
+            freeNodeMap = new HashMap<>();
             waySet = new HashSet<>();
             File inputFile = new File(dbPath);
             FileInputStream inputStream = new FileInputStream(inputFile);
@@ -60,6 +67,9 @@ public class GraphDB {
 
     public Node getNode(long v) {
         return nodeMap.get(v);
+    }
+    public Node getFreeNode(long v) {
+        return freeNodeMap.get(v);
     }
     public void addNode(Node node) {
         nodeMap.put(node.getId(), node);
@@ -89,6 +99,7 @@ public class GraphDB {
         }
 
         for (Long key : needCleaned) {
+            freeNodeMap.put(key, nodeMap.get(key));
             nodeMap.remove(key);
         }
     }
@@ -197,5 +208,24 @@ public class GraphDB {
      */
     double lat(long v) {
         return nodeMap.get(v).getLat();
+    }
+
+    LocationTrie generateTrieByAllLocation() {
+        LocationTrie trie = new LocationTrie();
+        addPlotToTrie(trie, nodeMap);
+        addPlotToTrie(trie, freeNodeMap);
+        return trie;
+    }
+
+
+    public void addPlotToTrie(LocationTrie trie, Map<Long, Node> map) {
+        for (Map.Entry<Long, Node> entry : map.entrySet()) {
+            Long id = entry.getKey();
+            String name = entry.getValue().getName();
+            if (name == null) {
+                continue;
+            }
+            trie.add(id, name);
+        }
     }
 }

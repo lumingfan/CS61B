@@ -79,6 +79,7 @@ public class MapServer {
 
     private static Rasterer rasterer;
     private static GraphDB graph;
+    private static LocationTrie trie;
     private static List<Long> route = new LinkedList<>();
     /* Define any static variables here. Do not define any instance variables of MapServer. */
 
@@ -90,6 +91,7 @@ public class MapServer {
      **/
     public static void initialize() {
         graph = new GraphDB(OSM_DB_PATH);
+        trie = graph.generateTrieByAllLocation();
         rasterer = new Rasterer();
     }
 
@@ -285,7 +287,7 @@ public class MapServer {
      * cleaned <code>prefix</code>.
      */
     public static List<String> getLocationsByPrefix(String prefix) {
-        return new LinkedList<>();
+        return trie.getPrefix(prefix);
     }
 
     /**
@@ -301,7 +303,21 @@ public class MapServer {
      * "id" : Number, The id of the node. <br>
      */
     public static List<Map<String, Object>> getLocations(String locationName) {
-        return new LinkedList<>();
+        Set<Long> setId = trie.getFull(locationName);
+        List<Map<String, Object>> returnMap = new LinkedList<>();
+        for (Long id : setId) {
+            Map<String, Object> items = new HashMap<>();
+            Node node = graph.getNode(id);
+            if (node == null) {
+                node = graph.getFreeNode(id);
+            }
+            items.put("lat", node.getLat());
+            items.put("lon", node.getLon());
+            items.put("name", node.getName());
+            items.put("id", node.getId());
+            returnMap.add(items);
+        }
+        return returnMap;
     }
 
     /**
