@@ -21,7 +21,7 @@ public class LocationTrie {
     private void add(TrieNode nowNode, Long id, String name, int index) {
         if (index == name.length()) {
             nowNode.setEnd(true);
-            nowNode.setName(name);
+            nowNode.addName(name);
             nowNode.addID(id);
             return;
         }
@@ -29,7 +29,7 @@ public class LocationTrie {
     }
 
     private boolean charIsValid(char ch) {
-        return Character.isAlphabetic(ch) || ch == ' ';
+        return (ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || (ch == ' ');
     }
     private TrieNode getNextNode(TrieNode node, char ch) {
         if (!charIsValid(ch)) {
@@ -85,7 +85,7 @@ public class LocationTrie {
 
     private void getAllName(TrieNode node, List<String> path) {
         if (node.isEnd()) {
-            path.add(node.getName());
+            path.addAll(node.getNameSet());
         }
         for (TrieNode next : node.next.values()) {
             getAllName(next, path);
@@ -98,13 +98,13 @@ public class LocationTrie {
     private class TrieNode {
         private boolean isEnd;
         private Map<Character, TrieNode> next;
-        private String name;
+        private Set<String> nameSet;
         private Set<Long> idSet;
 
         TrieNode() {
             setEnd(false);
             next = new HashMap<>();
-            setName("");
+            nameSet = new HashSet<>();
             idSet = new HashSet<>();
         }
 
@@ -117,12 +117,12 @@ public class LocationTrie {
             isEnd = end;
         }
 
-        public String getName() {
-            return name;
+        public Set<String> getNameSet() {
+            return nameSet;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        public void addName(String name) {
+            this.nameSet.add(name);
         }
 
         public void addID(Long id) {

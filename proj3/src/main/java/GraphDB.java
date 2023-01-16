@@ -1,4 +1,5 @@
-// import org.junit.Test;
+/*import org.junit.Test;
+import static org.junit.Assert.*;*/
 import org.xml.sax.SAXException;
 
 import java.util.Set;
@@ -215,6 +216,8 @@ public class GraphDB {
         return nodeMap.get(v).getLat();
     }
 
+    // test
+    // private Set<String> set = new HashSet<>();
     LocationTrie generateTrieByAllLocation() {
         LocationTrie returnTrie = new LocationTrie();
         addPlotToTrie(returnTrie, nodeMap);
@@ -230,6 +233,7 @@ public class GraphDB {
             if (name == null) {
                 continue;
             }
+            // set.add(name);
             nowTrie.add(id, name);
         }
     }
@@ -275,10 +279,12 @@ public class GraphDB {
         return returnMap;
     }
 
-   /* @Test
+  /*  @Test
     public void test() {
+        assertEquals(set.size(), trie.getAllName().size());
         List<Map<String, Object>> test = getLocations("sullivan countertops");
         System.out.println(getLocationsByPrefix("p"));
+        System.out.println(getLocations("pav"));
         System.out.println(test.get(0));
     }*/
 }
