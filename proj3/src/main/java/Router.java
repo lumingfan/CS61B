@@ -9,26 +9,8 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * This class provides a shortestPath method for finding routes between two points
- * on the map. Start by using Dijkstra's, and if your code isn't fast enough for your
- * satisfaction (or the autograder), upgrade your implementation by switching it to A*.
- * Your code will probably not be fast enough to pass the autograder unless you use A*.
- * The difference between A* and Dijkstra's is only a couple of lines of code, and boils
- * down to the priority you use to order your vertices.
- */
+
 public class Router {
-    /**
-     * Return a List of longs representing the shortest path from the node
-     * closest to a start location and the node closest to the destination
-     * location.
-     * @param g The graph to use.
-     * @param stlon The longitude of the start location.
-     * @param stlat The latitude of the start location.
-     * @param destlon The longitude of the destination location.
-     * @param destlat The latitude of the destination location.
-     * @return A list of node id's in the order visited on the shortest path.
-     */
     public static List<Long> shortestPath(GraphDB g, double stlon, double stlat,
                                           double destlon, double destlat) {
         PriorityQueue<NodeDis> heap = new PriorityQueue<>();
@@ -70,7 +52,9 @@ public class Router {
         if (!path.containsKey(end)) {
             return returnPath;
         }
+<<<<<<< HEAD
 
+=======
         while (end != start) {
             returnPath.addFirst(end);
             end = path.get(end);
@@ -98,15 +82,9 @@ public class Router {
         }
     }
 
-    /**
-     * Create the list of directions corresponding to a route on the graph.
-     * @param g The graph to use.
-     * @param route The route to translate into directions. Each element
-     *              corresponds to a node from the graph in the route.
-     * @return A list of NavigatiionDirection objects corresponding to the input
-     * route.
-     */
+   
     public static List<NavigationDirection> routeDirections(GraphDB g, List<Long> route) {
+<<<<<<< HEAD
         return null;
     }
 
@@ -114,6 +92,11 @@ public class Router {
      * Class to represent a navigation direction, which consists of 3 attributes:
      * a direction to go, a way, and the distance to travel for.
      */
+=======
+        return null; // FIXME
+    }
+
+ 
     public static class NavigationDirection {
 
         /** Integer constants representing directions. */
