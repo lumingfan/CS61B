@@ -1,3 +1,4 @@
+// import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import java.util.Set;
@@ -57,6 +58,7 @@ public class GraphDB {
         }
         clean();
         trie = generateTrieByAllLocation();
+        // test();
     }
 
     /**
@@ -272,4 +274,11 @@ public class GraphDB {
         }
         return returnMap;
     }
+
+   /* @Test
+    public void test() {
+        List<Map<String, Object>> test = getLocations("sullivan countertops");
+        System.out.println(getLocationsByPrefix("p"));
+        System.out.println(test.get(0));
+    }*/
 }

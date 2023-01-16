@@ -28,8 +28,11 @@ public class LocationTrie {
         add(getNextNode(nowNode, name.charAt(index)), id, name, index + 1);
     }
 
+    private boolean charIsValid(char ch) {
+        return Character.isAlphabetic(ch) || ch == ' ';
+    }
     private TrieNode getNextNode(TrieNode node, char ch) {
-        if (!Character.isAlphabetic(ch) && ch != ' ') {
+        if (!charIsValid(ch)) {
             return node;
         }
         if (!node.next.containsKey(lower(ch))) {
@@ -39,7 +42,7 @@ public class LocationTrie {
     }
 
     private TrieNode getNextNodeNoCreate(TrieNode node, char ch) {
-        if (ch == ' ') {
+        if (!charIsValid(ch)) {
             return node;
         }
         return node.next.get(lower(ch));
