@@ -1,6 +1,6 @@
 import java.util.Map;
 public class RequestInfo {
-    private static final String[] PARAMS ={"lrlon", "ullon", "lrlat", "ullat", "w", "h"};
+    private static final String[] PARAMS = {"lrlon", "ullon", "lrlat", "ullat", "w", "h"};
     private double lrlon;
     private double ullon;
     private double lrlat;
@@ -9,9 +9,9 @@ public class RequestInfo {
     private double h;
 
     private double lonDPP;
-    private boolean lonDPP_calculated;
+    private boolean lonDPPCalculated;
 
-    public RequestInfo() {}
+    public RequestInfo() { }
 
     public RequestInfo(double lrlon, double ullon, double lrlat, double ullat, double w, double h) {
         this.lrlon = lrlon;
@@ -21,7 +21,7 @@ public class RequestInfo {
         this.w = w;
         this.h = h;
         this.lonDPP = 0.0;
-        this.lonDPP_calculated = false;
+        this.lonDPPCalculated = false;
     }
 
     public double getUllat() {
@@ -76,12 +76,19 @@ public class RequestInfo {
 
         String item = entry.getKey();
         double value = entry.getValue();
-        if (item.equals(PARAMS[0])) { setLrlon(value); }
-        else if (item.equals(PARAMS[1])) { setUllon(value); }
-        else if (item.equals(PARAMS[2])) { setLrlat(value); }
-        else if (item.equals(PARAMS[3])) { setUllat(value); }
-        else if (item.equals(PARAMS[4])) { setW(value); }
-        else if (item.equals(PARAMS[5])) { setH(value); }
+        if (item.equals(PARAMS[0])) {
+            setLrlon(value);
+        } else if (item.equals(PARAMS[1])) {
+            setUllon(value);
+        } else if (item.equals(PARAMS[2])) {
+            setLrlat(value);
+        } else if (item.equals(PARAMS[3])) {
+            setUllat(value);
+        } else if (item.equals(PARAMS[4])) {
+            setW(value);
+        } else if (item.equals(PARAMS[5])) {
+            setH(value);
+        }
     }
 
     private double calLonDPP() {
@@ -89,11 +96,11 @@ public class RequestInfo {
     }
 
     public double getLonDPP() {
-        if (lonDPP_calculated) {
+        if (lonDPPCalculated) {
             return lonDPP;
         }
         lonDPP = calLonDPP();
-        lonDPP_calculated = true;
+        lonDPPCalculated = true;
         return lonDPP;
     }
 }

@@ -1,4 +1,3 @@
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,11 +11,29 @@ public class Rasterer {
     public static final double ROOT_ULLAT = 37.892195547244356, ROOT_ULLON = -122.2998046875,
             ROOT_LRLAT = 37.82280243352756, ROOT_LRLON = -122.2119140625;
     public static final int TILE_SIZE = 256;
-    private static final double ROOT_LONDPP =  (ROOT_LRLON - ROOT_ULLON) / TILE_SIZE;
+    private static final double ROOT_LONDPP = (ROOT_LRLON - ROOT_ULLON) / TILE_SIZE;
     private static final int MAX_DEPTH = 7;
 
     public Rasterer() {
         // YOUR CODE HERE
+    }
+
+    private static double getRootLonDPP() {
+        return ROOT_LONDPP;
+    }
+
+    // if pass test, the modifier should be private
+    private static double getLonDPP(int depth) {
+        return getRootLonDPP() / Math.pow(2, depth);
+    }
+
+    public static int calDepth(double targetLonDPP) {
+        for (int i = 0; i <= MAX_DEPTH; ++i) {
+            if (getLonDPP(i) < targetLonDPP) {
+                return i;
+            }
+        }
+        return MAX_DEPTH;
     }
 
     // if pass test, the modifier should be private
@@ -25,6 +42,7 @@ public class Rasterer {
         for (Map.Entry<String, Double> entry : params.entrySet()) {
             info.setInfoByEntry(entry);
         }
+
         return info;
     }
 
@@ -32,29 +50,13 @@ public class Rasterer {
     private boolean validateLon(RequestInfo info) {
         return info.getUllon() <= ROOT_LRLON && info.getLrlon() >= ROOT_ULLON;
     }
+
     private boolean validateLat(RequestInfo info) {
-        return info.getUllat() >= ROOT_LRLAT &&  info.getLrlat() <= ROOT_ULLAT;
+        return info.getUllat() >= ROOT_LRLAT && info.getLrlat() <= ROOT_ULLAT;
     }
+
     private boolean validate(RequestInfo info) {
         return validateLat(info) && validateLon(info);
-    }
-
-
-
-    private static double getRootLonDPP() { return ROOT_LONDPP; }
-
-    // if pass test, the modifier should be private
-    private static double getLonDPP(int depth) {
-        return getRootLonDPP() / Math.pow(2, depth);
-    }
-
-    public static int calDepth(double target_lonDPP) {
-        for (int i = 0; i <= MAX_DEPTH ; ++i) {
-            if (getLonDPP(i) < target_lonDPP) {
-                return i;
-            }
-        }
-        return MAX_DEPTH;
     }
 
     public int calTileNum(int depth) {
@@ -90,25 +92,23 @@ public class Rasterer {
     }
 
 
-
     /**
      * Takes a user query and finds the grid of images that best matches the query. These
      * images will be combined into one big image (rastered) by the front end. <br>
-     *
-     *     The grid of images must obey the following properties, where image in the
-     *     grid is referred to as a "tile".
-     *     <ul>
-     *         <li>The tiles collected must cover the most longitudinal distance per pixel
-     *         (LonDPP) possible, while still covering less than or equal to the amount of
-     *         longitudinal distance per pixel in the query box for the user viewport size. </li>
-     *         <li>Contains all tiles that intersect the query bounding box that fulfill the
-     *         above condition.</li>
-     *         <li>The tiles must be arranged in-order to reconstruct the full image.</li>
-     *     </ul>
+     * <p>
+     * The grid of images must obey the following properties, where image in the
+     * grid is referred to as a "tile".
+     * <ul>
+     *     <li>The tiles collected must cover the most longitudinal distance per pixel
+     *     (LonDPP) possible, while still covering less than or equal to the amount of
+     *     longitudinal distance per pixel in the query box for the user viewport size. </li>
+     *     <li>Contains all tiles that intersect the query bounding box that fulfill the
+     *     above condition.</li>
+     *     <li>The tiles must be arranged in-order to reconstruct the full image.</li>
+     * </ul>
      *
      * @param params Map of the HTTP GET request's query parameters - the query box and
      *               the user viewport width and height.
-     *
      * @return A map of results for the front end as specified: <br>
      * "render_grid"   : String[][], the files to display. <br>
      * "raster_ul_lon" : Number, the bounding upper left longitude of the rastered image. <br>
@@ -117,16 +117,16 @@ public class Rasterer {
      * "raster_lr_lat" : Number, the bounding lower right latitude of the rastered image. <br>
      * "depth"         : Number, the depth of the nodes of the rastered image <br>
      * "query_success" : Boolean, whether the query was able to successfully complete; don't
-     *                    forget to set this to true on success! <br>
+     * forget to set this to true on success! <br>
      */
     public Map<String, Object> getMapRaster(Map<String, Double> params) {
 
         RequestInfo paramsInfo = resolute(params);
         int depth = calDepth(paramsInfo.getLonDPP());
-        boolean query_success = validate(paramsInfo);
+        boolean querySuccess = validate(paramsInfo);
 
         Map<String, Object> results = new HashMap<>();
-        results.put("query_success", query_success);
+        results.put("query_success", querySuccess);
         results.put("depth", depth);
 
         int tileNum = calTileNum(depth);
@@ -143,19 +143,20 @@ public class Rasterer {
         String[][] tiles = new String[rows][cols];
         for (int row = beginRow; row <= endRow; ++row) {
             for (int col = beginCol; col <= endCol; ++col) {
-                tiles[row - beginRow][col - beginCol] = "d" + depth + "_x" + col + "_y" + row + ".png";
+                tiles[row - beginRow][col - beginCol] =
+                        "d" + depth + "_x" + col + "_y" + row + ".png";
             }
         }
 
-        double raster_ul_lon = ROOT_ULLON + beginCol * aveLonDis;
-        double raster_lr_lon = ROOT_ULLON + (endCol + 1) * aveLonDis;
-        double raster_ul_lat = ROOT_ULLAT - beginRow * aveLatDis;
-        double raster_lr_lat = ROOT_ULLAT - (endRow + 1) * aveLatDis;
+        double rasterUlLon = ROOT_ULLON + beginCol * aveLonDis;
+        double rasterLrLon = ROOT_ULLON + (endCol + 1) * aveLonDis;
+        double rasterUlLat = ROOT_ULLAT - beginRow * aveLatDis;
+        double rasterLrLat = ROOT_ULLAT - (endRow + 1) * aveLatDis;
 
-        results.put("raster_ul_lon", raster_ul_lon);
-        results.put("raster_lr_lon", raster_lr_lon);
-        results.put("raster_ul_lat", raster_ul_lat);
-        results.put("raster_lr_lat", raster_lr_lat);
+        results.put("raster_ul_lon", rasterUlLon);
+        results.put("raster_lr_lon", rasterLrLon);
+        results.put("raster_ul_lat", rasterUlLat);
+        results.put("raster_lr_lat", rasterLrLat);
         results.put("render_grid", tiles);
 
         return results;

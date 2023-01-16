@@ -57,7 +57,13 @@ public class Router {
             }
         }
 
+
+
         LinkedList<Long> returnPath = new LinkedList<>();
+        if (!path.containsKey(end)) {
+            return returnPath;
+        }
+
         while (end != start) {
             returnPath.addFirst(end);
             end = path.get(end);
@@ -94,95 +100,8 @@ public class Router {
      * route.
      */
     public static List<NavigationDirection> routeDirections(GraphDB g, List<Long> route) {
-        List<NavigationDirection> navigationDirections = new LinkedList<>();
-        double initialAngle = g.bearing(route.get(0), route.get(1));
-        double dis = g.distance(route.get(0), route.get(1));
-        String lastWay = getWayName(g, route.get(0));
-        String way = getWayName(g, route.get(1));
-        long lastNode = route.get(0);
-        long newNode = route.get(1);
-        int direction = NavigationDirection.START;
-
-        if (isChangingDirection(g, lastNode, newNode, initialAngle) && !way.equals(lastWay)) {
-            direction = calDirection(g, lastNode, newNode, initialAngle);
-            navigationDirections.add(new NavigationDirection(direction, lastWay, dis));
-            dis = 0.0;
-            lastWay = way;
-            initialAngle = g.bearing(lastNode, newNode);
-        }
-
-        lastNode = route.get(1);
-
-        int index = 0;
-        for (Long node : route) {
-            if (index < 2) {
-                index++;
-                continue;
-            }
-
-            way = getWayName(g, node);
-            if (isChangingDirection(g, lastNode, node, initialAngle) && !way.equals(lastWay)) {
-                direction = calDirection(g, lastNode, node, initialAngle);
-                navigationDirections.add(new NavigationDirection(direction, lastWay, dis));
-                dis = 0.0;
-                lastWay = way;
-                initialAngle = g.bearing(lastNode, node);
-            }
-            dis += g.distance(lastNode, node);
-            lastNode = node;
-        }
-
-        navigationDirections.add(new NavigationDirection(direction, lastWay, dis));
-        return navigationDirections; // FIXME
+        return null;
     }
-
-    private static int calDirection(GraphDB g, long last, long now, double angle) {
-        double newAngle = g.bearing(last, now);
-        double dev = calAngleDev(newAngle, angle);
-        return getDirectionByAngle(dev);
-    }
-
-    private static boolean isChangingDirection(GraphDB g, long last, long now, double angle) {
-        return calDirection(g, last, now, angle) != NavigationDirection.STRAIGHT;
-    }
-
-    private static double calAngleDev(double newAngle, double oldAngle) {
-        return oldAngle - newAngle;
-    }
-
-
-    private static String getWayName(GraphDB g, long node) {
-        String name = g.getNode(node).getWayName();
-        return name == null ? NavigationDirection.UNKNOWN_ROAD : name;
-    }
-
-
-    private static int getDirectionByAngle(double angle) {
-        int direction;
-        if (angle <= 15 && angle >= -15) {
-            direction = NavigationDirection.STRAIGHT;
-        } else if (angle <= 30 && angle >= -30) {
-            if (angle >= 15) {
-                direction = NavigationDirection.SLIGHT_RIGHT;
-            } else {
-                direction = NavigationDirection.SLIGHT_LEFT;
-            }
-        } else if (angle <= 100 && angle >= -100) {
-            if (angle >= 30) {
-                direction = NavigationDirection.RIGHT;
-            } else {
-                direction = NavigationDirection.LEFT;
-            }
-        } else {
-            if (angle >= 100) {
-                direction = NavigationDirection.SHARP_RIGHT;
-            } else {
-                direction = NavigationDirection.SHARP_LEFT;
-            }
-        }
-        return direction;
-    }
-
 
     /**
      * Class to represent a navigation direction, which consists of 3 attributes:

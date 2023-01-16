@@ -89,6 +89,7 @@ public class GraphBuildingHandler extends DefaultHandler {
             String k = attributes.getValue("k");
             String v = attributes.getValue("v");
             if (k.equals("maxspeed")) {
+                int temp = 0;
                 // the class Way doesn't implement the field maxSpeed;
             } else if (k.equals("highway") && ALLOWED_HIGHWAY_TYPES.contains(v)) {
                 way.setFlag(true);
@@ -120,7 +121,6 @@ public class GraphBuildingHandler extends DefaultHandler {
                 g.addWay(way);
                 for (Node node : way.getWay()) {
                     Node lastNode = lastNodeId == 0 ? null : g.getNode(lastNodeId);
-                    node.setWayName(way.getName());
                     if (lastNode != null) {
                         Edge edge = new Edge(lastNode, node);
                         node.addEdge(edge);
