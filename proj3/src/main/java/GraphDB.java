@@ -1,7 +1,12 @@
 import org.xml.sax.SAXException;
 
-import java.util.Map;
 import java.util.Set;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
+import java.util.LinkedList;
+import java.util.ArrayList;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,10 +15,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import java.util.HashMap;
-import java.util.HashSet;
-
-import java.util.ArrayList;
 
 
 /**
@@ -31,6 +32,7 @@ public class GraphDB {
     Map<Long, Node> nodeMap;
     Map<Long, Node> freeNodeMap;
     Set<Way> waySet;
+    private static LocationTrie trie;
 
     /**
      * Example constructor shows how to create and start an XML parser.
@@ -54,6 +56,7 @@ public class GraphDB {
             e.printStackTrace();
         }
         clean();
+        trie = generateTrieByAllLocation();
     }
 
     /**
@@ -211,21 +214,62 @@ public class GraphDB {
     }
 
     LocationTrie generateTrieByAllLocation() {
-        LocationTrie trie = new LocationTrie();
-        addPlotToTrie(trie, nodeMap);
-        addPlotToTrie(trie, freeNodeMap);
-        return trie;
+        LocationTrie returnTrie = new LocationTrie();
+        addPlotToTrie(returnTrie, nodeMap);
+        addPlotToTrie(returnTrie, freeNodeMap);
+        return returnTrie;
     }
 
 
-    public void addPlotToTrie(LocationTrie trie, Map<Long, Node> map) {
+    public void addPlotToTrie(LocationTrie nowTrie, Map<Long, Node> map) {
         for (Map.Entry<Long, Node> entry : map.entrySet()) {
             Long id = entry.getKey();
             String name = entry.getValue().getName();
             if (name == null) {
                 continue;
             }
-            trie.add(id, name);
+            nowTrie.add(id, name);
         }
+    }
+
+    /**
+     * In linear time, collect all the names of OSM locations that prefix-match the query string.
+     * @param prefix Prefix string to be searched for. Could be any case, with our without
+     *               punctuation.
+     * @return A <code>List</code> of the full names of locations whose cleaned name matches the
+     * cleaned <code>prefix</code>.
+     */
+    public List<String> getLocationsByPrefix(String prefix) {
+        return trie.getPrefix(prefix);
+    }
+
+    /**
+     * Collect all locations that match a cleaned <code>locationName</code>, and return
+     * information about each node that matches.
+     * @param locationName A full name of a location searched for.
+     * @return A list of locations whose cleaned name matches the
+     * cleaned <code>locationName</code>, and each location is a map of parameters for the Json
+     * response as specified: <br>
+     * "lat" : Number, The latitude of the node. <br>
+     * "lon" : Number, The longitude of the node. <br>
+     * "name" : String, The actual name of the node. <br>
+     * "id" : Number, The id of the node. <br>
+     */
+    public List<Map<String, Object>> getLocations(String locationName) {
+        Set<Long> setId = trie.getFull(locationName);
+        List<Map<String, Object>> returnMap = new LinkedList<>();
+        for (Long id : setId) {
+            Map<String, Object> items = new HashMap<>();
+            Node node = getNode(id);
+            if (node == null) {
+                node = getFreeNode(id);
+            }
+            items.put("lat", node.getLat());
+            items.put("lon", node.getLon());
+            items.put("name", node.getName());
+            items.put("id", node.getId());
+            returnMap.add(items);
+        }
+        return returnMap;
     }
 }
