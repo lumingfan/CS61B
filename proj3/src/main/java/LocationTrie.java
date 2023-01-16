@@ -29,7 +29,7 @@ public class LocationTrie {
     }
 
     private TrieNode getNextNode(TrieNode node, char ch) {
-        if (ch == ' ') {
+        if (!Character.isAlphabetic(ch) && ch != ' ') {
             return node;
         }
         if (!node.next.containsKey(lower(ch))) {
